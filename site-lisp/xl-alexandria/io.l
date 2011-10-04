@@ -1,3 +1,10 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/macros")
+  (require "xl-alexandria/lists")
+  )
+
 ;; Copyright (c) 2002-2006, Edward Marco Baringer
 ;; All rights reserved.
 
@@ -121,3 +128,6 @@ compatible element-types."
     (when finish-output
       (finish-output output))
     bytes-written))
+
+
+(provide "xl-alexandria/io")

@@ -1,3 +1,8 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  )
+
 (in-package :alexandria)
 
 (defun required-argument (&optional name)
@@ -89,3 +94,6 @@ Examples:
 			     (:normal `(when (not ,gflag) ,@forms))
 			     (:abort  `(when ,gflag ,@forms))
 			     (:always `(progn ,@forms)))))))))
+
+
+(provide "xl-alexandria/conditions")

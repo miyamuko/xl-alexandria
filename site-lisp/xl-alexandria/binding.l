@@ -1,3 +1,8 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  )
+
 (in-package :alexandria)
 
 (defmacro if-let (bindings &body (then-form &optional else-form))
@@ -91,3 +96,5 @@ PROGN."
          (when ,(caar binding-list)
            ,@(bind (cdr binding-list) forms))))))
 
+
+(provide "xl-alexandria/binding")

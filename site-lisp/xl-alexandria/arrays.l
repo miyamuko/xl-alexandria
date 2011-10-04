@@ -1,3 +1,9 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/types")
+  )
+
 (in-package :alexandria)
 
 (defun copy-array (array &key
@@ -18,3 +24,6 @@ perform better."
                  :element-type element-type :fill-pointer fill-pointer
                  :adjustable adjustable :displaced-to array)
      dims)))
+
+
+(provide "xl-alexandria/arrays")

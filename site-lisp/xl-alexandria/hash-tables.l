@@ -1,3 +1,8 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  )
+
 (in-package :alexandria)
 
 (defun copy-hash-table (table &key key test size
@@ -97,3 +102,6 @@ already in the table."
     (if ok
         (values value ok)
         (values (setf (gethash key hash-table) default) nil))))
+
+
+(provide "xl-alexandria/hash-tables")

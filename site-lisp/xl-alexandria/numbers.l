@@ -1,3 +1,9 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/sequences")
+  )
+
 (in-package :alexandria)
 
 (declaim (inline clamp))
@@ -240,3 +246,6 @@ K defaults to N"
   (check-type k (integer 0))
   (assert (>= n k))
   (%multiply-range (1+ (- n k)) n))
+
+
+(provide "xl-alexandria/numbers")

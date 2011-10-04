@@ -1,3 +1,10 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/lists")
+  (require "xl-alexandria/types")
+  )
+
 (in-package :alexandria)
 
 ;; Make these inlinable by declaiming them INLINE here and some of them
@@ -480,3 +487,6 @@ if calling FUNCTION modifies either the derangement or SEQUENCE."
       sequence)))
 
 (declaim (notinline sequence-of-length-p))
+
+
+(provide "xl-alexandria/sequences")

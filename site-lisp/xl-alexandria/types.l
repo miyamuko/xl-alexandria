@@ -1,3 +1,10 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/symbols")
+  (require "xl-alexandria/lists")
+  )
+
 (in-package :alexandria)
 
 (deftype array-index (&optional (length array-dimension-limit))
@@ -135,3 +142,6 @@ types are not equivalent."
 
 (define-modify-macro coercef (type-spec) coerce
   "Modify-macro for COERCE.")
+
+
+(provide "xl-alexandria/types")

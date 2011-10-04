@@ -1,3 +1,10 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/symbols")
+  (require "xl-alexandria/macros")
+  )
+
 (in-package :alexandria)
 
 (declaim (inline ensure-function))	; to propagate return type.
@@ -140,3 +147,6 @@ with and ARGUMENTS to FUNCTION."
 corresponding function."
   `(labels ((,name ,lambda-list ,@body))
      #',name))
+
+
+(provide "xl-alexandria/functions")

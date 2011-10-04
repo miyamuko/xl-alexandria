@@ -1,3 +1,9 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/control-flow")
+  )
+
 (in-package :alexandria)
 
 (defun featurep (feature-expression)
@@ -12,3 +18,6 @@ or list acceptable to the reader macros #+ and #-."
             (:or  (some #'featurep (rest feature-expression)))
             (:not (assert (= 2 (length feature-expression)))
                   (not (featurep (second feature-expression))))))))
+
+
+(provide "xl-alexandria/features")

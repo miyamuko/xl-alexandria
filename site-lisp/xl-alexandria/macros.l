@@ -1,3 +1,10 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/strings")
+  (require "xl-alexandria/symbols")
+  )
+
 (in-package :alexandria)
 
 (defmacro with-gensyms (names &body forms)
@@ -303,4 +310,4 @@ Example:
   (setf (documentation name 'function) (documentation 'destructuring-case 'function)))
 
 
-
+(provide "xl-alexandria/macros")

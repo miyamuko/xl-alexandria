@@ -1,3 +1,8 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  )
+
 (in-package :alexandria)
 
 (defun %reevaluate-constant (name value test)
@@ -35,3 +40,6 @@ Signals an error if NAME is already a constant variable whose value is not
 equal under TEST to result of evaluating INITIAL-VALUE."
   `(defconstant ,name (%reevaluate-constant ',name ,initial-value ,test)
      ,@(when documentation `(,documentation))))
+
+
+(provide "xl-alexandria/definitions")

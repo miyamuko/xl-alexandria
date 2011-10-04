@@ -1,3 +1,9 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/functions")
+  )
+
 (in-package :alexandria)
 
 (declaim (inline safe-endp))
@@ -350,3 +356,6 @@ Example:
                      (push subtree list)))))
       (traverse tree))
     (nreverse list)))
+
+
+(provide "xl-alexandria/lists")
