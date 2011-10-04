@@ -74,6 +74,7 @@ and then calling the next one with the primary value of the last."
           more-functions
           :initial-value function))
 
+#-xyzzy
 (define-compiler-macro compose (function &rest more-functions)
   (labels ((compose-1 (funs)
              (if (cdr funs)
@@ -103,6 +104,7 @@ the last."
           more-functions
           :initial-value function))
 
+#-xyzzy
 (define-compiler-macro multiple-value-compose (function &rest more-functions)
   (labels ((compose-1 (funs)
              (if (cdr funs)
@@ -126,6 +128,7 @@ it is called with to FUNCTION."
       ;; Using M-V-C we don't need to append the arguments.
       (multiple-value-call fn (values-list arguments) (values-list more)))))
 
+#-xyzzy
 (define-compiler-macro curry (function &rest arguments)
   (let ((curries (make-gensym-list (length arguments) "CURRY")))
     `(let ,(mapcar #'list curries arguments)

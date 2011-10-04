@@ -115,6 +115,7 @@ ARRAY-DIMENSION-LIMIT."
 of TYPE."
   (lambda (thing) (typep thing type)))
 
+#-xyzzy
 (define-compiler-macro of-type (&whole form type &environment env)
   ;; This can yeild a big benefit, but no point inlining the function
   ;; all over the place if TYPE is not constant.

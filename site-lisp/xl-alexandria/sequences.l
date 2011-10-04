@@ -190,6 +190,7 @@ is a literal integer."
             (return-from length= nil)))))
   t)
 
+#-xyzzy
 (define-compiler-macro length= (&whole form length &rest sequences)
   (cond
     ((zerop (length sequences))
