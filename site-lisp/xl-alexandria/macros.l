@@ -140,7 +140,7 @@ Signals a PROGRAM-ERROR is the lambda-list is malformed."
                                        what elt lambda-list)))
              (check-spec (spec what)
                (destructuring-bind (init suppliedp) spec
-                 (declare (ignore init))
+                 #-xyzzy(declare (ignore init))
                  (check-variable suppliedp what nil))))
       (dolist (elt lambda-list)
         (case elt
@@ -226,7 +226,7 @@ Signals a PROGRAM-ERROR is the lambda-list is malformed."
              (&aux
               (if (consp elt)
                   (destructuring-bind (var &optional init) elt
-                    (declare (ignore init))
+                    #-xyzzy(declare (ignore init))
                     (check-variable var "&aux parameter"))
                   (progn
                     (check-variable elt "&aux parameter")

@@ -38,7 +38,7 @@ the default value specified for OPEN."
   "Evaluate BODY with STREAM-NAME to an input stream on the file
 FILE-NAME. ARGS is sent as is to the call to OPEN except EXTERNAL-FORMAT,
 which is only sent to WITH-OPEN-FILE when it's not NIL."
-  (declare (ignore direction))
+  #-xyzzy(declare (ignore direction))
   (when direction-p
     (error "Can't specifiy :DIRECTION for WITH-INPUT-FROM-FILE."))
   `(with-open-file* (,stream-name ,file-name :direction :input ,@args)
@@ -51,7 +51,7 @@ which is only sent to WITH-OPEN-FILE when it's not NIL."
   "Evaluate BODY with STREAM-NAME to an output stream on the file
 FILE-NAME. ARGS is sent as is to the call to OPEN except EXTERNAL-FORMAT,
 which is only sent to WITH-OPEN-FILE when it's not NIL."
-  (declare (ignore direction))
+  #-xyzzy(declare (ignore direction))
   (when direction-p
     (error "Can't specifiy :DIRECTION for WITH-OUTPUT-TO-FILE."))
   `(with-open-file* (,stream-name ,file-name :direction :output ,@args)

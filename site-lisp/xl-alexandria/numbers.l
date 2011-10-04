@@ -58,7 +58,7 @@ Examples:
   (iota 3 :start 1 :step 1.0)   => (1.0 2.0 3.0)
   (iota 3 :start -1 :step -1/2) => (-1 -3/2 -2)
 "
-  (declare (type (integer 0) n) (number start step))
+  #-xyzzy(declare (type (integer 0) n) (number start step))
   (loop repeat n
      ;; KLUDGE: get numeric contagion right for the first element too
      for i = (+ start (- step step)) then (+ i step)
@@ -77,7 +77,7 @@ Examples:
     ;;; 2.0
     ;;; 3.0
 "
-  (declare (type (integer 0) n) (number start step))
+  #-xyzzy(declare (type (integer 0) n) (number start step))
   (loop repeat n
         ;; KLUDGE: get numeric contagion right for the first element too
         for i = (+ start (- step step)) then (+ i step)
@@ -169,14 +169,14 @@ minimum of its original value and NUMBERS.")
   ;; fixnums, _and_ on lisps with 16 bit fixnums this can actually be
   ;; needed.
   (labels ((bisect (j k)
-             (declare (type (integer 1 #.most-positive-fixnum) j k))
+             #-xyzzy(declare (type (integer 1 #.most-positive-fixnum) j k))
              (if (< (- k j) +factorial-bisection-range-limit+)
                  (multiply-range j k)
                  (let ((middle (+ j (truncate (- k j) 2))))
                    (* (bisect j middle)
                       (bisect (+ middle 1) k)))))
            (bisect-big (j k)
-             (declare (type (integer 1) j k))
+             #-xyzzy(declare (type (integer 1) j k))
              (if (= j k)
                  j
                  (let ((middle (+ j (truncate (- k j) 2))))
@@ -185,11 +185,11 @@ minimum of its original value and NUMBERS.")
                           (bisect-big j middle))
                       (bisect-big (+ middle 1) k)))))
            (multiply-range (j k)
-             (declare (type (integer 1 #.most-positive-fixnum) j k))
+             #-xyzzy(declare (type (integer 1 #.most-positive-fixnum) j k))
              (do ((f k (* f m))
                   (m (1- k) (1- m)))
                  ((< m j) f)
-               (declare (type (integer 0 (#.most-positive-fixnum)) m)
+               #-xyzzy(declare (type (integer 0 (#.most-positive-fixnum)) m)
                         (type unsigned-byte f)))))
     (bisect i j)))
 

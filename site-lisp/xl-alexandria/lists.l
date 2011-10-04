@@ -8,7 +8,7 @@
 
 (declaim (inline safe-endp))
 (defun safe-endp (x)
-  (declare (optimize safety))
+  #-xyzzy(declare (optimize safety))
   (endp x))
 
 (defun alist-plist (alist)
@@ -88,7 +88,7 @@ the iteration early. If RETURN is not used, returns VALUES."
       `(block nil
          (flet ((,results ()
                   (let (,key ,val)
-                    (declare (ignorable ,key ,val))
+                    #-xyzzy(declare (ignorable ,key ,val))
                     (return ,values))))
            (let* ((,tail ,plist)
                   (,key (if ,tail
@@ -97,7 +97,7 @@ the iteration early. If RETURN is not used, returns VALUES."
                  (,val (if ,tail
                            (pop ,tail)
                            (malformed-plist ',plist))))
-            (declare (ignorable ,key ,val))
+            #-xyzzy(declare (ignorable ,key ,val))
             ,@declarations
             (tagbody
                ,loop
@@ -202,7 +202,7 @@ designator of the expected type in a TYPE-ERROR."
                      (slow (cons (car list) (cdr list)) (cdr slow))
                      ,@(when step (list step)))
                     (nil)
-                  (declare (dynamic-extent slow) ,@(when declare (list declare)))
+                  #-xyzzy(declare (dynamic-extent slow) ,@(when declare (list declare)))
                   (when (safe-endp fast)
                     (return ,ret1))
                   (when (safe-endp (cdr fast))
@@ -273,7 +273,7 @@ expected-type designator of a TYPE-ERROR."
 in the list designated by KEYS and values corresponding to them are removed.
 The returned property-list may share structure with the PLIST, but PLIST is
 not destructively modified. Keys are compared using EQ."
-  (declare (optimize (speed 3)))
+  #-xyzzy(declare (optimize (speed 3)))
   ;; FIXME: possible optimization: (remove-from-plist '(:x 0 :a 1 :b 2) :a)
   ;; could return the tail without consing up a new list.
   (loop for (key . rest) on plist by #'cddr

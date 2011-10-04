@@ -31,7 +31,7 @@ copy is returned by default."
 (defun maphash-keys (function table)
   "Like MAPHASH, but calls FUNCTION with each key in the hash table TABLE."
   (maphash (lambda (k v)
-             (declare (ignore v))
+             #-xyzzy(declare (ignore v))
              (funcall function k))
            table))
 
@@ -39,7 +39,7 @@ copy is returned by default."
 (defun maphash-values (function table)
   "Like MAPHASH, but calls FUNCTION with each value in the hash table TABLE."
   (maphash (lambda (k v)
-             (declare (ignore k))
+             #-xyzzy(declare (ignore k))
              (funcall function v))
            table))
 
