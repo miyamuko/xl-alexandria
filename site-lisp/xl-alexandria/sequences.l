@@ -240,7 +240,7 @@ not a sequence, or is an empty sequence."
                  :datum sequence
                  :expected-type '(and sequence (not (satisfies emptyp)))))))
 
-(defun (setf first-elt) (object sequence)
+(defun set-first-elt (sequence object)
   "Sets the first element of SEQUENCE. Signals a type-error if SEQUENCE is
 not a sequence, is an empty sequence, or if OBJECT cannot be stored in SEQUENCE."
   ;; Can't just directly use ELT, as it is not guaranteed to signal the
@@ -254,6 +254,7 @@ not a sequence, is an empty sequence, or if OBJECT cannot be stored in SEQUENCE.
          (error 'type-error
                 :datum sequence
                 :expected-type '(and sequence (not (satisfies emptyp)))))))
+(defsetf first-elt set-first-elt)
 
 (defun last-elt (sequence)
   "Returns the last element of SEQUENCE. Signals a type-error if SEQUENCE is
@@ -270,7 +271,7 @@ not a proper sequence, or is an empty sequence."
                   :datum sequence
                   :expected-type '(and proper-sequence (not (satisfies emptyp))))))))
 
-(defun (setf last-elt) (object sequence)
+(defun set-last-elt (sequence object)
   "Sets the last element of SEQUENCE. Signals a type-error if SEQUENCE is not a proper
 sequence, is an empty sequence, or if OBJECT cannot be stored in SEQUENCE."
   (let ((len 0))
@@ -282,6 +283,7 @@ sequence, is an empty sequence, or if OBJECT cannot be stored in SEQUENCE."
            (error 'type-error
                   :datum sequence
                   :expected-type '(and proper-sequence (not (satisfies emptyp))))))))
+(defsetf last-elt set-last-elt)
 
 (defun starts-with-subseq (prefix sequence &rest args &key (return-suffix nil) &allow-other-keys)
   "Test whether the first elements of SEQUENCE are the same (as per TEST) as the elements of PREFIX.

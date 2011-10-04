@@ -226,14 +226,17 @@ proper list."
     nil
     (cadr last)
     (car fast))
-  
-  (def (setf lastcar) (object list)
+
+  (def set-lastcar (list object)
       "Sets the last element of LIST. Signals a type-error if LIST is not a proper
 list."
     nil
     nil
     (setf (cadr last) object)
-    (setf (car fast) object)))
+    (setf (car fast) object))
+
+  (defsetf lastcar set-lastcar)
+  )
 
 (defun make-circular-list (length &key initial-element)
   "Creates a circular list of LENGTH with the given INITIAL-ELEMENT."
