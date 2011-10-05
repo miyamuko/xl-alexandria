@@ -1420,7 +1420,7 @@
       (let ((syms (with-unique-names (foo bar quux)
                     (list foo bar quux))))
         (list (find-if #'symbol-package syms)
-              (equal '("FOO0" "BAR1" "QUUX2")
+              (equal '("foo0" "bar1" "quux2")
                      (mapcar #'symbol-name syms)))))
   (nil t))
 
@@ -1429,7 +1429,7 @@
       (let ((syms (with-unique-names ((foo "_foo_") (bar -bar-) (quux #\q))
                     (list foo bar quux))))
         (list (find-if #'symbol-package syms)
-              (equal '("_foo_0" "-BAR-1" "q2")
+              (equal '("_foo_0" "-bar-1" "q2")
                      (mapcar #'symbol-name syms)))))
   (nil t))
 
@@ -1442,7 +1442,7 @@
                      (with-unique-names ((foo "_foo_") (bar -bar-) (quux 42))
                        (list foo bar quux))))
                (list (find-if #'symbol-package syms)
-                (equal '("_foo_0" "-BAR-1" "q2")
+                (equal '("_foo_0" "-bar-1" "q2")
                  (mapcar #'symbol-name syms))))))
         (errorp err)))
   t)
