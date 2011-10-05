@@ -1,3 +1,9 @@
+2011-10-05  MIYAMUKO Katsuyuki
+
+	* typep, subtypep 周り以外はとりあえずだいたい動くようになった
+
+	* テストを修正
+
 2011-10-04  MIYAMUKO Katsuyuki
 
 	* バイトコンパイルしてある程度動くまでとりあえず修正
