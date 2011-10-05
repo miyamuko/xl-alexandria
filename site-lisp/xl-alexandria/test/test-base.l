@@ -1,14 +1,31 @@
-(in-package :cl-user)
+; -*- mode: lisp; package: alexandria.test.base; encoding: shift_jis -*-
 
-(defpackage :alexandria-tests
-  (:use :cl :alexandria #+sbcl :sb-rt #-sbcl :rtest)
-  (:import-from #+sbcl :sb-rt #-sbcl :rtest
-                #:*compile-tests* #:*expected-failures*))
+(require "ansi-loop")
+(require "ansify")
+(require "lisp-unit")
+(require "xl-alexandria")
+(require "xl-alexandria/test/helper")
 
-(in-package :alexandria-tests)
+(defpackage :alexandria.test.base
+  (:use :lisp :editor
+   :alexandria :alexandria.test.helper
+   )
+  (:import-from :lisp-unit
+   :remove-all-tests
+   )
+  (:shadowing-import-from :ansi-loop
+   :loop
+   :loop-finish
+   )
+  (:shadowing-import-from :ansify
+   :typep
+   )
+  )
 
-(defun run-tests (&key ((:compiled *compile-tests*)))
-  (do-tests))
+(in-package :alexandria.test.base)
+
+(remove-all-tests :alexandria.test.base)
+
 
 ;;;; Arrays
 
@@ -245,7 +262,11 @@
             ;; CLISP overflows the stack with this bit.
             ;; See <http://sourceforge.net/tracker/index.php?func=detail&aid=2029069&group_id=1355&atid=101355>.
             #-clisp (equalp-copy (copy-hash-table orig :test 'equalp)))
-        (list (eql (hash-table-size eq-copy) (hash-table-size orig))
+        ;; xyzzy では make-hash-table の size に指定した値より大きな素数が
+        ;; 初期値として利用される。
+        ;; orig    の size 引数は 123 なので hash-table-size は 149 となり、
+        ;; eq-copy の size 引数は 149 なので hash-table-size は 199 となる。
+        (list #-xyzzy (eql (hash-table-size eq-copy) (hash-table-size orig))
               (eql (hash-table-rehash-size eq-copy)
                    (hash-table-rehash-size orig))
               (hash-table-count eql-copy)
@@ -255,7 +276,7 @@
               (gethash (copy-seq foo) equal-copy)
               (gethash "FOO" equal-copy)
               #-clisp (gethash "FOO" equalp-copy))))
-  (t t 2 t nil t t nil t))
+  (#-xyzzy t t 2 t nil t t nil t))
 
 (deftest copy-hash-table.2
     (let ((ht (make-hash-table))
@@ -404,7 +425,7 @@
 
 (deftest compose.2
     (let ((composite
-           (locally (declare (notinline compose))
+           (locally #-xyzzy(declare (notinline compose))
              (compose '1+
                       (lambda (x)
                         (* x 2))
@@ -412,6 +433,7 @@
       (funcall composite "2"))
   5)
 
+#-xyzzy
 (deftest compose.3
     (let ((compose-form (funcall (compiler-macro-function 'compose)
                                  '(compose '1+
@@ -441,7 +463,7 @@
   (3 1))
 
 (deftest multiple-value-compose.2
-    (let ((composite (locally (declare (notinline multiple-value-compose))
+    (let ((composite (locally #-xyzzy(declare (notinline multiple-value-compose))
                        (multiple-value-compose
                         #'truncate
                         (lambda (x y)
@@ -452,6 +474,7 @@
       (multiple-value-list (funcall composite "2 11")))
   (5 1))
 
+#-xyzzy
 (deftest multiple-value-compose.3
     (let ((compose-form (funcall (compiler-macro-function 'multiple-value-compose)
                                  '(multiple-value-compose
@@ -477,11 +500,12 @@
   9)
 
 (deftest curry.2
-    (let ((curried (locally (declare (notinline curry))
+    (let ((curried (locally #-xyzzy(declare (notinline curry))
                      (curry '* 2 3))))
       (funcall curried 7))
   42)
 
+#-xyzzy
 (deftest curry.3
     (let ((curried-form (funcall (compiler-macro-function 'curry)
                                  '(curry '/ 8)
@@ -885,7 +909,7 @@
 
 (deftest map-iota.1
     (let (all)
-      (declare (notinline map-iota))
+      #-xyzzy(declare (notinline map-iota))
       (values (map-iota (lambda (x) (push x all))
                         3
                         :start 2
@@ -1261,8 +1285,8 @@
             (list (list 1 2 3)
                   (vector :a :b :c)
                   "FOOBAR"
-                  #*001
-                  #*010))
+                  (make-bit-vector #b001)
+                  (make-bit-vector #b010)))
   (3 :c #\R 1 0))
 
 (deftest last-elt.error.1
@@ -1287,14 +1311,14 @@
 (deftest setf-last-elt.1
     (let ((l (list 1 2 3))
           (s (copy-seq "foobar"))
-          (b (copy-seq #*010101001)))
+          (b (copy-seq (make-bit-vector #b010101001))))
       (setf (last-elt l) '???
             (last-elt s) #\?
             (last-elt b) 0)
       (values l s b))
   (1 2 ???)
   "fooba?"
-  #*010101000)
+  (make-bit-vector #b010101000))
 
 (deftest setf-last-elt.error.1
     (handler-case
@@ -1487,7 +1511,7 @@
 ;;;; Symbols
 
 (deftest ensure-symbol.1
-    (ensure-symbol :cons :cl)
+    (ensure-symbol :cons :lisp)
   cons
   :external)
 
@@ -1517,7 +1541,7 @@
   :sym-bolic)
 
 (deftest format-symbol.3
-    (let ((*package* (find-package :cl)))
+    (let ((*package* (find-package :lisp)))
       (format-symbol t "FIND-~A" 'package))
   find-package)
 
@@ -1547,7 +1571,7 @@
 
 (deftest of-type.1
     (locally
-        (declare (notinline of-type))
+        #-xyzzy(declare (notinline of-type))
     (let ((f (of-type 'string)))
       (list (funcall f "foo")
             (funcall f 'bar))))
