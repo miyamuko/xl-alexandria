@@ -1,3 +1,10 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/definitions")
+  (require "xl-alexandria/macros")
+  )
+
 (in-package :alexandria)
 
 (defun extract-function-name (spec)
@@ -104,3 +111,6 @@ NIL."
   "Evaluates FIRST-FORM, then SECOND-FORM, and then FORMS. Yields as its value
 all the value returned by SECOND-FORM."
   `(progn ,first-form (multiple-value-prog1 ,second-form ,@forms)))
+
+
+(provide "xl-alexandria/control-flow")

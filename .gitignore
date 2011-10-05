@@ -1,4 +1,5 @@
-*.fasl
+*.lc
 *~
 \#*
 *.patch
+XTAGS

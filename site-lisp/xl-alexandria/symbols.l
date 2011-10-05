@@ -1,3 +1,8 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  )
+
 (in-package :alexandria)
 
 (declaim (inline ensure-symbol))
@@ -11,9 +16,13 @@ Example:
 
   (ensure-symbol :cons :cl) => cl:cons, :external
 "
+  #+xyzzy
+  (setf name (string-downcase (string name)))
   (intern (string name) package))
 
 (defun maybe-intern (name package)
+  #+xyzzy
+  (setf name (string-downcase (string name)))
   (values
    (if package
        (intern name (if (eq t package) *package* package))
@@ -30,6 +39,8 @@ returns a symbol interned in the package designated by PACKAGE."
 
 (defun make-keyword (name)
   "Interns the string designated by NAME in the KEYWORD package."
+  #+xyzzy
+  (setf name (string-downcase (string name)))
   (intern (string name) :keyword))
 
 (defun make-gensym (name)
@@ -59,3 +70,6 @@ producing a symbol in the current package."
                (len (length x)))
           (replace name x :start1 index)
           (incf index len))))))
+
+
+(provide "xl-alexandria/symbols")

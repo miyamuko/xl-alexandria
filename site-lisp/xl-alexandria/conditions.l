@@ -1,3 +1,8 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  )
+
 (in-package :alexandria)
 
 (defun required-argument (&optional name)
@@ -6,11 +11,11 @@ use as an initialization form for structure and class-slots, and
 a default value for required keyword arguments."
   (error "Required argument ~@[~S ~]missing." name))
 
-(define-condition simple-style-warning (simple-warning style-warning)
+(define-condition simple-style-warning (simple-warning)
   ())
 
 (defun simple-style-warning (message &rest args)
-  (warn 'simple-style-warning :format-control message :format-arguments args))
+  (warn 'simple-style-warning :format-string message :format-arguments args))
 
 ;; We don't specify a :report for simple-reader-error to let the
 ;; underlying implementation report the line and column position for
@@ -19,30 +24,31 @@ a default value for required keyword arguments."
 ;; implementation. But even then it's still inspectable from the
 ;; debugger...
 (define-condition simple-reader-error
-    #-sbcl(simple-error reader-error)
+    #-sbcl(reader-error)
     #+sbcl(sb-int:simple-reader-error)
   ())
 
 (defun simple-reader-error (stream message &rest args)
   (error 'simple-reader-error
          :stream stream
-         :format-control message
-         :format-arguments args))
+         :linenum (si:*stream-line-number stream)
+         :datum (format nil message args)))
 
-(define-condition simple-parse-error (simple-error parse-error)
+(define-condition simple-parse-error (simple-error)
   ())
 
 (defun simple-parse-error (message &rest args)
   (error 'simple-parse-error
-         :format-control message
+         :format-string message
          :format-arguments args))
 
+#-xyzzy
 (define-condition simple-program-error (simple-error program-error)
   ())
 
 (defun simple-program-error (message &rest args)
   (error 'simple-program-error
-         :format-control message
+         :format-string message
          :format-arguments args))
 
 (defmacro ignore-some-conditions ((&rest conditions) &body body)
@@ -89,3 +95,6 @@ Examples:
 			     (:normal `(when (not ,gflag) ,@forms))
 			     (:abort  `(when ,gflag ,@forms))
 			     (:always `(progn ,@forms)))))))))
+
+
+(provide "xl-alexandria/conditions")

@@ -1,3 +1,10 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/strings")
+  (require "xl-alexandria/symbols")
+  )
+
 (in-package :alexandria)
 
 (defmacro with-gensyms (names &body forms)
@@ -133,7 +140,7 @@ Signals a PROGRAM-ERROR is the lambda-list is malformed."
                                        what elt lambda-list)))
              (check-spec (spec what)
                (destructuring-bind (init suppliedp) spec
-                 (declare (ignore init))
+                 #-xyzzy(declare (ignore init))
                  (check-variable suppliedp what nil))))
       (dolist (elt lambda-list)
         (case elt
@@ -219,7 +226,7 @@ Signals a PROGRAM-ERROR is the lambda-list is malformed."
              (&aux
               (if (consp elt)
                   (destructuring-bind (var &optional init) elt
-                    (declare (ignore init))
+                    #-xyzzy(declare (ignore init))
                     (check-variable var "&aux parameter"))
                   (progn
                     (check-variable elt "&aux parameter")
@@ -303,4 +310,4 @@ Example:
   (setf (documentation name 'function) (documentation 'destructuring-case 'function)))
 
 
-
+(provide "xl-alexandria/macros")

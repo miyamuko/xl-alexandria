@@ -1,3 +1,10 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/symbols")
+  (require "xl-alexandria/lists")
+  )
+
 (in-package :alexandria)
 
 (deftype array-index (&optional (length array-dimension-limit))
@@ -108,6 +115,7 @@ ARRAY-DIMENSION-LIMIT."
 of TYPE."
   (lambda (thing) (typep thing type)))
 
+#-xyzzy
 (define-compiler-macro of-type (&whole form type &environment env)
   ;; This can yeild a big benefit, but no point inlining the function
   ;; all over the place if TYPE is not constant.
@@ -130,8 +138,11 @@ types are not equivalent."
            (values nil ok))
           (t
            (multiple-value-bind (sub ok) (subtypep type2 type1)
-             (declare (ignore sub))
+             #-xyzzy(declare (ignore sub))
              (values nil ok))))))
 
 (define-modify-macro coercef (type-spec) coerce
   "Modify-macro for COERCE.")
+
+
+(provide "xl-alexandria/types")

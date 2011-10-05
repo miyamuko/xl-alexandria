@@ -1,3 +1,10 @@
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "xl-alexandria/package")
+  (require "xl-alexandria/missing")
+  (require "xl-alexandria/lists")
+  (require "xl-alexandria/types")
+  )
+
 (in-package :alexandria)
 
 ;; Make these inlinable by declaiming them INLINE here and some of them
@@ -8,7 +15,7 @@
 (defun sequence-of-length-p (sequence length)
   "Return true if SEQUENCE is a sequence of length LENGTH. Signals an error if
 SEQUENCE is not a sequence. Returns FALSE for circular lists."
-  (declare (type array-index length)
+  #-xyzzy(declare (type array-index length)
            (inline length)
            (optimize speed))
   (etypecase sequence
@@ -26,7 +33,7 @@ SEQUENCE is not a sequence. Returns FALSE for circular lists."
      (= length (length sequence)))))
 
 (defun rotate-tail-to-head (sequence n)
-  (declare (type (integer 1) n))
+  #-xyzzy(declare (type (integer 1) n))
   (if (listp sequence)
       (let ((m (mod n (proper-list-length sequence))))
         (if (null (cdr sequence))
@@ -43,7 +50,7 @@ SEQUENCE is not a sequence. Returns FALSE for circular lists."
         sequence)))
 
 (defun rotate-head-to-tail (sequence n)
-  (declare (type (integer 1) n))
+  #-xyzzy(declare (type (integer 1) n))
   (if (listp sequence)
       (let ((m (mod (1- n) (proper-list-length sequence))))
         (if (null (cdr sequence))
@@ -83,7 +90,7 @@ share structure with it."
   "Returns a random permutation of SEQUENCE bounded by START and END.
 Permuted sequence may share storage with the original one. Signals an
 error if SEQUENCE is not a proper sequence."
-  (declare (fixnum start) (type (or fixnum null) end))
+  #-xyzzy(declare (fixnum start) (type (or fixnum null) end))
   (typecase sequence
     (list
      (let* ((end (or end (proper-list-length sequence)))
@@ -106,7 +113,7 @@ error if SEQUENCE is not a proper sequence."
   "Returns a random element from SEQUENCE bounded by START and END. Signals an
 error if the SEQUENCE is not a proper non-empty sequence, or if END and START
 are not proper bounding index designators for SEQUENCE."
-  (declare (sequence sequence) (fixnum start) (type (or fixnum null) end))
+  #-xyzzy(declare (sequence sequence) (fixnum start) (type (or fixnum null) end))
   (let* ((size (if (listp sequence)
                    (proper-list-length sequence)
                    (length sequence)))
@@ -163,7 +170,7 @@ is not a sequence."
 the length of all the sequences and the integers are equal. Hint: there's a
 compiler macro that expands into more efficient code if the first argument
 is a literal integer."
-  (declare (dynamic-extent sequences)
+  #-xyzzy(declare (dynamic-extent sequences)
            (inline sequence-of-length-p)
            (optimize speed))
   (unless (cdr sequences)
@@ -174,7 +181,7 @@ is a literal integer."
          (current (if (integerp first)
                       first
                       (length first))))
-    (declare (type array-index current))
+    #-xyzzy(declare (type array-index current))
     (dolist (el sequences)
       (if (integerp el)
           (unless (= el current)
@@ -183,6 +190,7 @@ is a literal integer."
             (return-from length= nil)))))
   t)
 
+#-xyzzy
 (define-compiler-macro length= (&whole form length &rest sequences)
   (cond
     ((zerop (length sequences))
@@ -190,9 +198,9 @@ is a literal integer."
     (t
      (let ((optimizedp (integerp length)))
        (with-unique-names (tmp current)
-         (declare (ignorable current))
+         #-xyzzy(declare (ignorable current))
          `(locally
-              (declare (inline sequence-of-length-p))
+              #-xyzzy(declare (inline sequence-of-length-p))
             (let ((,tmp)
                   ,@(unless optimizedp
                      `((,current ,length))))
@@ -233,7 +241,7 @@ not a sequence, or is an empty sequence."
                  :datum sequence
                  :expected-type '(and sequence (not (satisfies emptyp)))))))
 
-(defun (setf first-elt) (object sequence)
+(defun set-first-elt (sequence object)
   "Sets the first element of SEQUENCE. Signals a type-error if SEQUENCE is
 not a sequence, is an empty sequence, or if OBJECT cannot be stored in SEQUENCE."
   ;; Can't just directly use ELT, as it is not guaranteed to signal the
@@ -247,6 +255,7 @@ not a sequence, is an empty sequence, or if OBJECT cannot be stored in SEQUENCE.
          (error 'type-error
                 :datum sequence
                 :expected-type '(and sequence (not (satisfies emptyp)))))))
+(defsetf first-elt set-first-elt)
 
 (defun last-elt (sequence)
   "Returns the last element of SEQUENCE. Signals a type-error if SEQUENCE is
@@ -263,7 +272,7 @@ not a proper sequence, or is an empty sequence."
                   :datum sequence
                   :expected-type '(and proper-sequence (not (satisfies emptyp))))))))
 
-(defun (setf last-elt) (object sequence)
+(defun set-last-elt (sequence object)
   "Sets the last element of SEQUENCE. Signals a type-error if SEQUENCE is not a proper
 sequence, is an empty sequence, or if OBJECT cannot be stored in SEQUENCE."
   (let ((len 0))
@@ -275,6 +284,7 @@ sequence, is an empty sequence, or if OBJECT cannot be stored in SEQUENCE."
            (error 'type-error
                   :datum sequence
                   :expected-type '(and proper-sequence (not (satisfies emptyp))))))))
+(defsetf last-elt set-last-elt)
 
 (defun starts-with-subseq (prefix sequence &rest args &key (return-suffix nil) &allow-other-keys)
   "Test whether the first elements of SEQUENCE are the same (as per TEST) as the elements of PREFIX.
@@ -434,7 +444,7 @@ length of the delimited subsequence."
           (let ((permutation (subseq sequence 0 length)))
             (flet ((permute-combination (combination)
                      (permute-sequence (replace permutation combination))))
-              (declare (dynamic-extent #'permute-combination))
+              #-xyzzy(declare (dynamic-extent #'permute-combination))
               (map-combinations #'permute-combination sequence
                                 :start start
                                 :end end
@@ -453,7 +463,7 @@ if calling FUNCTION modifies either the derangement or SEQUENCE."
          (derangement (subseq sequence 0 size))
          ;; Bitvector that has 1 for elements that have been deranged.
          (mask (make-array size :element-type 'bit :initial-element 0)))
-    (declare (dynamic-extent mask))
+    #-xyzzy(declare (dynamic-extent mask))
     ;; ad hoc algorith
     (labels ((derange (place n)
                ;; Perform one recursive step in deranging the
@@ -480,3 +490,6 @@ if calling FUNCTION modifies either the derangement or SEQUENCE."
       sequence)))
 
 (declaim (notinline sequence-of-length-p))
+
+
+(provide "xl-alexandria/sequences")
