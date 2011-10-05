@@ -1,0 +1,21 @@
+package: xl-alexandria
+version: 0.0.1
+
+sources:
+  include:
+    - site-lisp/xl-alexandria/**/*.l
+  exclude:
+    - site-lisp/xl-alexandria/**/test/*.l
+
+document:
+  - README.rdoc
+
+depends:
+  - ansi-loop
+  - ansify
+  - setf-values
+
+files:
+  include:
+    - site-lisp/**/*.l
+    - site-lisp/**/*.lc
