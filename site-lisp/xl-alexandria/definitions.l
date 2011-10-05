@@ -1,3 +1,5 @@
+; -*- mode: lisp; package: alexandria; encoding: shift_jis -*-
+
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (require "xl-alexandria/package")
   (require "xl-alexandria/missing")
@@ -43,3 +45,5 @@ equal under TEST to result of evaluating INITIAL-VALUE."
 
 
 (provide "xl-alexandria/definitions")
+
+;;; End

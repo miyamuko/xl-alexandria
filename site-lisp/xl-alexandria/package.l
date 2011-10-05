@@ -1,3 +1,5 @@
+; -*- mode: lisp; package: alexandria; encoding: shift_jis -*-
+
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (require "ansi-loop")
   (require "ansify")
@@ -21,7 +23,7 @@
        )
       )))
 
-(in-package :alexandria.0.dev)
+(in-package :alexandria)
 
 (export
  '(;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -262,3 +264,5 @@
 
 
 (provide "xl-alexandria/package")
+
+;;; End

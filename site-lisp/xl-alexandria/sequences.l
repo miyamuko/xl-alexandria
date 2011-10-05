@@ -1,3 +1,5 @@
+; -*- mode: lisp; package: alexandria; encoding: shift_jis -*-
+
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (require "xl-alexandria/package")
   (require "xl-alexandria/missing")
@@ -493,3 +495,5 @@ if calling FUNCTION modifies either the derangement or SEQUENCE."
 
 
 (provide "xl-alexandria/sequences")
+
+;;; End

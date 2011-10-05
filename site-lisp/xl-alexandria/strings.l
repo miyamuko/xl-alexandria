@@ -1,3 +1,5 @@
+; -*- mode: lisp; package: alexandria; encoding: shift_jis -*-
+
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (require "xl-alexandria/package")
   (require "xl-alexandria/missing")
@@ -12,3 +14,5 @@ or a character."
 
 
 (provide "xl-alexandria/strings")
+
+;;; End
