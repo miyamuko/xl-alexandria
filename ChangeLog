@@ -1,5 +1,7 @@
 2011-10-22  MIYAMUKO Katsuyuki
 
+	* simple-type-error が足りなかったので追加
+
 	* ansify のをいろいろ利用するようにした
 
 	* テストを追加

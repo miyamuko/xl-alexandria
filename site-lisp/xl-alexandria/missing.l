@@ -30,6 +30,16 @@
 (defsetf bit set-bit)
 
 
+(define-condition simple-type-error (type-error)
+  (format-control format-arguments)
+  (:report (lambda (c s)
+             (format s "不正なデータ型です: ~S: ~S~%~A"
+                     (simple-type-error-datum c)
+                     (simple-type-error-expected-type c)
+                     (apply #'format nil (simple-type-error-format-control c)
+                            (simple-type-error-format-arguments c))))))
+
+
 (provide "xl-alexandria/missing")
 
 ;;; End
