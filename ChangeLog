@@ -1,5 +1,7 @@
 2011-10-22  MIYAMUKO Katsuyuki
 
+	* テストを追加
+
 	* copy-file と featurep を上書きしないように shadow した
 
 2011-10-05  MIYAMUKO Katsuyuki

@@ -1383,7 +1383,7 @@
 
 (deftest sequences.passing-improper-lists
     (macrolet ((signals-error-p (form)
-		 `(handler-case 
+		 `(handler-case
                       (progn ,form nil)
 		    (type-error (e)
                       t)))
