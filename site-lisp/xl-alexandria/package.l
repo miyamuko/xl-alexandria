@@ -25,6 +25,12 @@
 
 (in-package :alexandria)
 
+(shadow
+ '(;; Lisp package
+   copy-file
+   featurep
+   ))
+
 (export
  '(;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    ;; BLESSED

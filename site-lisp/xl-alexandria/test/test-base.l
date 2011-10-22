@@ -8,10 +8,8 @@
 
 (defpackage :alexandria.test.base
   (:use :lisp :editor
+   :lisp-unit
    :alexandria :alexandria.test.helper
-   )
-  (:import-from :lisp-unit
-   :remove-all-tests
    )
   (:shadowing-import-from :ansi-loop
    :loop
@@ -19,6 +17,13 @@
    )
   (:shadowing-import-from :ansify
    :typep
+   )
+  (:shadowing-import-from :alexandria
+   ;; conflict with :lisp
+   :copy-file
+   :featurep
+   ;; conflict with :lisp-unit
+   :set-equal
    )
   )
 
