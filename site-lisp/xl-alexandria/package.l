@@ -15,9 +15,15 @@
        )
       (:shadowing-import-from :ansify
        :assert
+       :ccase
+       :cerror
+       :continue
+       :define-setf-expander
        :destructuring-bind
        :ecase
        :etypecase
+       :get-setf-expansion
+       :restart-case
        :typecase
        :typep
        )

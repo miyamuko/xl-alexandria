@@ -9,13 +9,6 @@
 (defmacro load-time-value (form &optional read-only-p)
   `(progn ,form))
 
-(setf (symbol-function 'define-setf-expander)
-      (symbol-function 'define-setf-method)
-      (symbol-function 'get-setf-expansion)
-      (symbol-function 'get-setf-method)
-      )
-
-
 (defun set-documentation (symbol doc-type newvalue)
   (if (and (consp symbol)
            (eq (car symbol) 'setf)
