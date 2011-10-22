@@ -129,8 +129,8 @@ are not proper bounding index designators for SEQUENCE."
                   :datum (cons start end)
                   :expected-type `(cons (integer 0 (,end2))
                                         (or null (integer (,start) ,size)))
-                  :format-control "~@<~S and ~S are not valid bounding index designators for ~
-                                   a sequence of length ~S.~:@>"
+                  :format-control "~S and ~S are not valid bounding index designators for ~
+                                   a sequence of length ~S."
                   :format-arguments (list start end size)))
           (t
            (let ((index (+ start (random (- end2 start)))))

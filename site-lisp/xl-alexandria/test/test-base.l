@@ -223,6 +223,17 @@
   t
   t)
 
+(deftest define-constant.error
+    (let ((name (gensym)))
+      (eval `(defvar ,name 13))
+      (values (handler-case
+                  (eval `(define-constant ,name 13))
+                (error ()
+                  :error))
+              (constantp name)))
+  :error
+  nil)
+
 ;;;; Errors
 
 ;;; TYPEP is specified to return a generalized boolean and, for
@@ -1102,6 +1113,31 @@
               (when (/= (random-elt s2) (random-elt s2))
                 (return t)))))
   (t t))
+
+(deftest random-elt.error.1
+    (let ((s1 #(1 2 3 4))
+          (s2 '(1 2 3 4)))
+      (mapcar (lambda (args)
+                (handler-case
+                    (apply 'random-elt args)
+                  (alexandria::simple-type-error ()
+                    :simple-type-error)))
+              (list (list s1 :start -1)
+                    (list s1 :end 5)
+                    (list s1 :start -1 :end 2)
+                    (list s1 :start 1 :end 5)
+                    (list s2 :start -1)
+                    (list s2 :end 5)
+                    (list s2 :start -1 :end 2)
+                    (list s2 :start 1 :end 5))))
+  (:simple-type-error
+   :simple-type-error
+   :simple-type-error
+   :simple-type-error
+   :simple-type-error
+   :simple-type-error
+   :simple-type-error
+   :simple-type-error))
 
 (deftest removef.1
     (let* ((x '(1 2 3))

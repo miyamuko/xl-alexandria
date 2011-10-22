@@ -15,14 +15,14 @@
         (if (not (constantp name))
             (prog1 new
               (cerror "Try to redefine the variable as a constant."
-                      "~@<~S is an already bound non-constant variable ~
-                       whose value is ~S.~:@>" name old))
+                      "~S is an already bound non-constant variable ~
+                       whose value is ~S." name old))
             (if (funcall test old new)
                 old
                 (restart-case
-                    (error "~@<~S is an already defined constant whose value ~
+                    (error "~S is an already defined constant whose value ~
                               ~S is not equal to the provided initial value ~S ~
-                              under ~S.~:@>" name old new test)
+                              under ~S." name old new test)
                   (ignore ()
                     :report "Retain the current value."
                     old)
