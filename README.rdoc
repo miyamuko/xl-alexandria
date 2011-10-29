@@ -7,8 +7,20 @@
 === SYNOPSIS
 
   (require "alexandria")
+  ;=> t
 
-  blur blur blur
+  (alexandria:flatten '((1 2 3) 4 ((((5))))))
+  ;=> (1 2 3 4 5)
+
+  (alexandria:plist-alist '(:foo 1 :bar 2))
+  ;=> ((:foo . 1) (:bar . 2))
+
+  (alexandria:iota 5)
+  ;=> (0 1 2 3 4)
+
+  (alexandria:when-let (buf (find-buffer "*test*"))
+    (delete-buffer buf))
+  ;=> t (*test* というバッファがある場合)
 
 
 === DESCRIPTION
@@ -16,7 +28,9 @@
 xl-alexandria は Common Lisp の {Alexandria}[http://common-lisp.net/project/alexandria/] を
 を xyzzy に移植したものです。
 
-blur blur blur
+Alexandria は巨大なユーティリティ集です。
+実践 Common Lisp や OnLisp に載っていたり、自分で書いたことがあるような
+関数・マクロが大量に詰まっています。
 
 
 === INSTALL
@@ -35,6 +49,45 @@ blur blur blur
 詳細は {Alexandria のリファレンス}[http://common-lisp.net/project/alexandria/draft/alexandria.html]
 を参照してください。
 
+alexandria パッケージには lisp パッケージと同名のシンボルがあります (copy-file と featurep)。
+
+そのまま use するとシンボルが衝突するので、必要なパッケージの方のシンボルを shadowing-import してください。
+
+  (eval-when (:compile-toplevel :load-toplevel :execute)
+    (unless (find-package :your-cool-application)
+      (require "alexandria")
+
+      (defpackage :your-cool-application
+        (:use :lisp :alexandria)
+        (:shadowing-import-from :lisp
+         ;; 以下のシンボルが alexandria と衝突するので lisp パッケージの方をインポート
+         :copy-file
+         :featurep
+         )
+        )))
+
+また、scratch バッファで使いたい場合などは use-alexandria という便利関数を利用できます。
+
+  (require "alexandria")
+  ;=> nil
+
+  (use-alexandria)
+  ;=> #<package: user>
+
+  (mapcar (compose #'make-keyword #'package-name #'symbol-package)
+          '(copy-file featurep))
+  ;=> (:lisp :lisp)
+
+
+  ;; alexandria の copy-file と featurep を使いたい場合はこうする。
+
+  (use-alexandria :shadowing-import-from :alexandria)
+  ;=> #<package: user>
+
+  (mapcar (compose #'make-keyword #'package-name #'symbol-package)
+          '(copy-file featurep))
+  ;=> (:alexandria.0.dev :alexandria.0.dev)
+
 
 === TODO
 
@@ -43,7 +96,17 @@ blur blur blur
 
 === KNOWN BUGS
 
-なし。
+* xyzzy の subtypep がバグっているので、type= が正しく動作しない
+
+    (alexandria:type= 'null '(and symbol list))
+    ;=> nil (本当は t)
+    ;   t
+
+* xyzzy の real 型の定義が少しおかしいので、alexandria:positive-real 型などが正しく動作しない
+
+    (ansify:typep -1 'alexandria:positive-real)
+    ;=> t (本当は nil)
+
 
 要望やバグは
 {GitHub Issues}[http://github.com/miyamuko/xl-alexandria/issues] か
