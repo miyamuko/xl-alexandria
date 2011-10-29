@@ -22,6 +22,18 @@
 (require "xl-alexandria/indent-hook")
 (require "xl-alexandria/version")
 
+
+(defun use-alexandria (&key (package *package*)
+                            (shadowing-import-from :lisp))
+  "copy-file と featurep を shadow しながら alexandria を use-package する。
+copy-file と featurep は lisp パッケージのものが shadowing-import される。"
+  (shadow (intern "copy-file" :lisp) package)
+  (shadow (intern "featurep" :lisp) package)
+  (use-package :alexandria package)
+  (shadowing-import (intern "copy-file" shadowing-import-from) package)
+  (shadowing-import (intern "featurep" shadowing-import-from)) package)
+
+
 (provide "xl-alexandria")
 
 ;;; End
