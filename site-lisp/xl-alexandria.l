@@ -18,6 +18,8 @@
 (require "xl-alexandria/strings")
 (require "xl-alexandria/symbols")
 (require "xl-alexandria/types")
+
+(require "xl-alexandria/indent-hook")
 (require "xl-alexandria/version")
 
 (provide "xl-alexandria")

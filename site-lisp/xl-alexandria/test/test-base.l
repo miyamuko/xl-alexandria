@@ -114,7 +114,7 @@
     (let (result)
       (block foof
 	(unwind-protect-case (aborted-p)
-	    (return-from foof)
+            (return-from foof)
 	  (:always (setq result aborted-p))))
       result)
   t)
@@ -539,7 +539,7 @@
     (let ((fac (named-lambda fac (x)
                  (if (> x 1)
                      (* x (fac (- x 1)))
-                     x))))
+                   x))))
       (funcall fac 5))
   120)
 
