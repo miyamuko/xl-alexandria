@@ -1,5 +1,9 @@
 2011-10-29  MIYAMUKO Katsuyuki
 
+	* io.l を動くようにした。
+	パフォーマンスを考慮して read-sequence, write-sequence は移植せずに
+	xyzzy 専用機能を使って実装した。
+
 	* マクロに ed::lisp-indent-hook を設定した
 
 2011-10-22  MIYAMUKO Katsuyuki

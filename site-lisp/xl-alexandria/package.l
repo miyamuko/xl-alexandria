@@ -8,7 +8,7 @@
   (unless (find-package :alexandria.0.dev)
     (defpackage :alexandria.0.dev
       (:nicknames :alexandria)
-      (:use :lisp)
+      (:use :lisp :editor)
       (:shadowing-import-from :ansi-loop
        :loop
        :loop-finish
