@@ -1,5 +1,7 @@
 2011-10-29  MIYAMUKO Katsuyuki
 
+	* xl-alexandria 0.0.1 リリース!
+
 	* (use-alexandria): alexandria パッケージには lisp パッケージと
 	衝突するシンボルがある (copy-file と featurep) ので、*scratch* バッファ
 	などで簡単に alexandria を use できるように便利関数を追加
