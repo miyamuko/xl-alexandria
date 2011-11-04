@@ -17,11 +17,6 @@
     (si:*putprop symbol newvalue (get doc-type 'lisp::documentation-type))))
 (defsetf documentation set-documentation)
 
-(defun fdefinition (function-name)
-  (symbol-function (if (consp function-name)
-                       (car (last function-name))
-                     function-name)))
-
 (defun bit (bitvector n)
   (aref bitvector n))
 

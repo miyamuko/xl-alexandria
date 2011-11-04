@@ -19,7 +19,9 @@
        :cerror
        :continue
        :define-setf-expander
+       :defun
        :destructuring-bind
+       :fdefinition
        :ecase
        :etypecase
        :get-setf-expansion

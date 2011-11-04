@@ -102,12 +102,6 @@ alexandria パッケージには lisp パッケージと同名のシンボルが
     ;=> nil (本当は t)
     ;   t
 
-* xyzzy の real 型の定義が少しおかしいので、alexandria:positive-real 型などが正しく動作しない
-
-    (ansify:typep -1 'alexandria:positive-real)
-    ;=> t (本当は nil)
-
-
 要望やバグは
 {GitHub Issues}[http://github.com/miyamuko/xl-alexandria/issues] か
 {@miyamuko}[http://twitter.com/home?status=%40miyamuko%20%23xyzzy%20xl-alexandria%3a%20]

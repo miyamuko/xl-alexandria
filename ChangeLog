@@ -1,3 +1,10 @@
+2011-11-04  MIYAMUKO Katsuyuki
+
+	* ansify 0.03.00 を利用するようにした
+	- ansify:fdefinition を import
+	- ansify:defun が (defun (setf foo)) をサポートしたので
+	  Alexandria の元のコードに戻した
+
 2011-10-29  MIYAMUKO Katsuyuki
 
 	* xl-alexandria 0.0.1 リリース!
