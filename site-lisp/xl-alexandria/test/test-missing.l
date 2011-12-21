@@ -45,18 +45,6 @@
       (documentation 'set-documentation-test 'variable))
   )
 
-(define-test missing/fdefinition
-  (assert-equal
-      #'car
-      (alexandria::fdefinition 'car))
-  (assert-equal
-      #'cdr
-      (alexandria::fdefinition 'cdr))
-  (assert-equal
-      #'car
-      (alexandria::fdefinition '(setf car)))
-  )
-
 (define-test missing/bit
   (let ((bitvector (make-vector 8 'element-type 'bit :initial-element 0)))
     (assert-equal
