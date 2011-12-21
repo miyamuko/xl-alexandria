@@ -23,7 +23,15 @@
 (remove-all-tests :alexandria.test.symbols)
 
 (define-test symbols/make-gensym
-  (assert-equalp '() (make-gensym))
+  (assert-equal "G1" (symbol-name (alexandria:make-gensym 1)))
+  (assert-equal "G2" (symbol-name (alexandria:make-gensym 2)))
+  (assert-equal "G100" (symbol-name (alexandria:make-gensym 100)))
+
+  (let ((*gensym-counter* 0))
+    (assert-equal "foo0" (symbol-name (alexandria:make-gensym "foo")))
+    (assert-equal "bar1" (symbol-name (alexandria:make-gensym :bar)))
+    (assert-equal "baz2" (symbol-name (alexandria:make-gensym 'baz)))
+    )
   )
 
 (define-test symbols/symbolicate
