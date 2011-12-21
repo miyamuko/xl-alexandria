@@ -27,7 +27,11 @@
   )
 
 (define-test symbols/symbolicate
-  ;; TODO
-  (assert-equalp '() (symbolicate))
+  (assert-equal '|| (symbolicate))
+  (assert-equal '|| (symbolicate ""))
+  (assert-equal 'f (symbolicate "f"))
+  (assert-equal 'foobar (symbolicate "foo" "bar"))
+  (assert-equal 'foo1 (symbolicate "foo" "1"))
+  (assert-equal 'foo_bar123 (symbolicate 'foo "_" 'bar "123"))
   )
 

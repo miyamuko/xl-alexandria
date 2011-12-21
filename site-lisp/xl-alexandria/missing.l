@@ -34,6 +34,22 @@
                      (apply #'format nil (simple-type-error-format-control c)
                             (simple-type-error-format-arguments c))))))
 
+;; xyzzy ‚Ì reduce ‚Í key ˆø”‚ª‘«‚è‚È‚¢
+(shadow 'reduce)
+(defun reduce (function sequence
+                        &key key from-end (start 0) end
+                        (initial-value nil sv))
+  (let ((keys `(:from-end ,from-end
+                :start ,start
+                :end ,end)))
+    (when sv
+      (setf keys (append keys `(:initial-value ,initial-value))))
+    (apply #'lisp:reduce function
+           (if key
+               (mapcar key sequence)
+             sequence)
+           keys)))
+
 
 (provide "xl-alexandria/missing")
 
