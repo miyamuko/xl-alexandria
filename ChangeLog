@@ -1,3 +1,7 @@
+2011-12-22  MIYAMUKO Katsuyuki
+
+	* upstream の変更を取り込み
+
 2011-12-21  MIYAMUKO Katsuyuki
 
 	* (symbolicate): 動作していなかったのを修正
