@@ -92,8 +92,9 @@ share structure with it."
   "Returns a random permutation of SEQUENCE bounded by START and END.
 Permuted sequence may share storage with the original one. Signals an
 error if SEQUENCE is not a proper sequence."
-  #-xyzzy(declare (fixnum start) (type (or fixnum null) end))
-  (typecase sequence
+  #-xyzzy(declare (type fixnum start)
+           (type (or fixnum null) end))
+  (etypecase sequence
     (list
      (let* ((end (or end (proper-list-length sequence)))
             (n (- end start)))
@@ -103,12 +104,14 @@ error if SEQUENCE is not a proper sequence."
          (decf n))))
     (vector
      (let ((end (or end (length sequence))))
-       (loop for i from (- end 1) downto start
-             do (rotatef (aref sequence i) (aref sequence (random (+ i 1)))))))
+       (loop for i from start below end
+             do (rotatef (aref sequence i)
+                         (aref sequence (+ i (random (- end i))))))))
     (sequence
      (let ((end (or end (length sequence))))
        (loop for i from (- end 1) downto start
-             do (rotatef (elt sequence i) (elt sequence (random (+ i 1))))))))
+             do (rotatef (elt sequence i)
+                         (elt sequence (+ i (random (- end i)))))))))
   sequence)
 
 (defun random-elt (sequence &key (start 0) end)

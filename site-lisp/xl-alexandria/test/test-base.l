@@ -51,6 +51,24 @@
                 (eql (fill-pointer orig) (fill-pointer copy)))))
   nil t t t)
 
+(deftest copy-array.3
+    (let* ((orig (vector 1 2 3))
+           (copy (copy-array orig)))
+      (typep copy 'simple-array))
+  t)
+
+(deftest copy-array.4
+   (let ((orig (make-array 21
+                           :adjustable t
+                           :fill-pointer 0)))
+     (dotimes (n 42)
+       (vector-push-extend n orig))
+     (let ((copy (copy-array orig
+                             :adjustable nil
+                             :fill-pointer nil)))
+       (typep copy 'simple-array)))
+ t)
+
 (deftest array-index.1
     (typep 0 'array-index)
   t)
@@ -530,10 +548,32 @@
         (funcall fun 2)))
   4)
 
+(deftest curry.4
+    (let* ((x 1)
+           (curried (curry (progn
+                             (incf x)
+                             (lambda (y z) (* x y z)))
+                           3)))
+      (list (funcall curried 7)
+            (funcall curried 7)
+            x))
+  (42 42 2))
+
 (deftest rcurry.1
     (let ((r (rcurry '/ 2)))
       (funcall r 8))
   4)
+
+(deftest rcurry.2
+    (let* ((x 1)
+           (curried (rcurry (progn
+                              (incf x)
+                              (lambda (y z) (* x y z)))
+                            3)))
+      (list (funcall curried 7)
+            (funcall curried 7)
+            x))
+  (42 42 2))
 
 (deftest named-lambda.1
     (let ((fac (named-lambda fac (x)
@@ -645,6 +685,10 @@
             (circular-tree-p quite-proper)
             (circular-tree-p quite-dotted)))
   (t t t t t t nil nil))
+
+(deftest circular-tree-p.2
+    (alexandria:circular-tree-p '#1=(#1#))
+  t)
 
 (deftest proper-list-p.1
     (let ((l1 (list 1))
@@ -1009,6 +1053,31 @@
       (list p xv))
   (2 #(10 2 10)))
 
+(deftest subfactorial.1
+    (mapcar #'subfactorial (iota 22))
+  (1
+   0
+   1
+   2
+   9
+   44
+   265
+   1854
+   14833
+   133496
+   1334961
+   14684570
+   176214841
+   2290792932
+   32071101049
+   481066515734
+   7697064251745
+   130850092279664
+   2355301661033953
+   44750731559645106
+   895014631192902121
+   18795307255050944540))
+
 ;;;; Arrays
 
 #+nil
@@ -1098,6 +1167,14 @@
                      (typep x '(integer 0 99)))
                    s)))
   (nil t t))
+
+(deftest shuffle.3
+    (let* ((orig (coerce (iota 21) 'vector))
+           (copy (copy-seq orig)))
+      (shuffle copy :start 10 :end 15)
+      (list (every #'eql (subseq copy 0 10) (subseq orig 0 10))
+            (every #'eql (subseq copy 15) (subseq orig 15))))
+  (t t))
 
 (deftest random-elt.1
     (let ((s1 #(1 2 3 4))
