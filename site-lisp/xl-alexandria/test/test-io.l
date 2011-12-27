@@ -192,10 +192,11 @@
         )
     (delete-file "test-output.txt")))
 
-(define-test io/read-file-into-string
+(define-test io/read-file-into-string/text-file
   (assert-equalp
       "xyzzy\nXYZZY\nｘｙｚｚｙ\n臭い爺\n"
       (read-file-into-string "test-file.txt"))
+
   ;; ファイル読み込みの高速化のためバッファを利用している。
   ;; outline-tree2 がちらつかないようにバッファは削除していない。
   (assert-true (find-buffer " *alexandria*"))
@@ -203,7 +204,18 @@
 
   (assert-error 'file-not-found
       (read-file-into-string "test-file-no-such-file.txt"))
+  )
 
+(define-test io/read-file-into-string/text-file-utf8
+  ;; 読み込み時に sjis に変換される
+  (assert-equalp
+      "xyzzy\nXYZZY\nｘｙｚｚｙ\n臭い爺\n"
+      (read-file-into-string "test-file-lf-utf8.bin"))
+  )
+
+;; ミニバッファにプロンプトがある状態で read-file-into-string が
+;; よばれても問題ないか
+(define-test io/read-file-into-string/minibuffer
   (flet ((test (&rest args)
            (assert-true (minibuffer-window-p (selected-window)))
            (assert-equal
@@ -216,7 +228,7 @@
       (assert-equalp buf (selected-buffer))))
   )
 
-(define-test io/write-string-into-file
+(define-test io/write-string-into-file/text-file
   (unwind-protect
       (progn
         (assert-false (file-exist-p "test-output.txt"))
@@ -249,7 +261,34 @@
         )
     (delete-file "test-output.txt")))
 
-(define-test io/read-file-into-byte-vector
+(define-test io/write-string-into-file/eol-code
+  (unwind-protect
+      (progn
+        (assert-false (file-exist-p "test-output.txt"))
+        (write-string-into-file (format nil "~C" (code-char #x0d)) "test-output.txt")
+        (assert-true (file-exist-p "test-output.txt"))
+        (assert-eql 1 (file-length "test-output.txt"))
+        (assert-equalp #(#x0d) (read-file-into-byte-vector "test-output.txt"))
+    (delete-file "test-output.txt")))
+  (unwind-protect
+      (progn
+        (assert-false (file-exist-p "test-output.txt"))
+        (write-string-into-file (format nil "~C" (code-char #x0a)) "test-output.txt")
+        (assert-true (file-exist-p "test-output.txt"))
+        (assert-eql 2 (file-length "test-output.txt"))
+        (assert-equalp #(#x0d #x0a) (read-file-into-byte-vector "test-output.txt"))
+    (delete-file "test-output.txt")))
+  (unwind-protect
+      (progn
+        (assert-false (file-exist-p "test-output.txt"))
+        (write-string-into-file (format nil "~C~C" (code-char #x0d) (code-char #x0A)) "test-output.txt")
+        (assert-true (file-exist-p "test-output.txt"))
+        (assert-eql 3 (file-length "test-output.txt"))
+        (assert-equalp #(#x0d #x0d #x0a) (read-file-into-byte-vector "test-output.txt"))
+        )
+    (delete-file "test-output.txt")))
+
+(define-test io/read-file-into-byte-vector/binary-file
   (let ((bytes (read-file-into-byte-vector "test-file.zip")))
     (assert-true (typep bytes 'simple-array))
     (assert-equalp
@@ -258,6 +297,23 @@
 
   (assert-error 'file-not-found
       (read-file-into-byte-vector "test-file-no-such-file.zip"))
+  )
+
+(define-test io/read-file-into-byte-vector/text-file
+  (let ((bytes (read-file-into-byte-vector "test-file.txt")))
+    (assert-true (typep bytes 'simple-array))
+    (assert-equalp
+        #(#x78 #x79 #x7a #x7a #x79 #x0d #x0a #x58 #x59 #x5a #x5a #x59 #x0d #x0a #x82 #x98
+          #x82 #x99 #x82 #x9a #x82 #x9a #x82 #x99 #x0d #x0a #x8f #x4c #x82 #xa2 #x96 #xea
+          #x0d #x0a)
+        bytes))
+  (let ((bytes (read-file-into-byte-vector "test-file-lf-utf8.bin")))
+    (assert-true (typep bytes 'simple-array))
+    (assert-equalp
+        #(#x78 #x79 #x7a #x7a #x79 #x0a #x58 #x59 #x5a #x5a #x59 #x0a #xef #xbd #x98 #xef
+          #xbd #x99 #xef #xbd #x9a #xef #xbd #x9a #xef #xbd #x99 #x0a #xe8 #x87 #xad #xe3
+          #x81 #x84 #xe7 #x88 #xba #x0a)
+        bytes))
   )
 
 (define-test io/write-byte-vector-into-file
@@ -340,7 +396,7 @@
           (format output "XYZZY"))))
   )
 
-(define-test io/copy-stream/file
+(define-test io/copy-stream/text-file
   (unwind-protect
       (progn
         (assert-false (file-exist-p "test-output.txt"))
