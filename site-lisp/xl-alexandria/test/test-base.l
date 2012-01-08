@@ -1436,7 +1436,7 @@
       (values l s b))
   (1 2 ???)
   "fooba?"
-  (make-bit-vector #b010101000))
+  #.(make-bit-vector #b010101000))
 
 (deftest setf-last-elt.error.1
     (handler-case

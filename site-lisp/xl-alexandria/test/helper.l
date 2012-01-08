@@ -28,20 +28,15 @@
       v))
 
 (defmacro deftest (short-desc form &body expected-values)
-  `(define-test ,short-desc
-     (assert-equalp
-         (values ,@(mapcar #'(lambda (v)
-                               (cond ((and (atom v)
-                                           (not (symbolp v)))
-                                      v)
-                                     ((and (consp v)
-                                           (symbolp (car v))
-                                           (fboundp (car v)))
-                                      v)
-                                     (t
-                                      `(quote ,v))))
-                           expected-values))
-         ,form)))
+  (let ((quoted-expected-values (mapcar #'(lambda (v)
+                                            (if (numberp v)
+                                                v
+                                              `(quote ,v)))
+                                        expected-values)))
+    `(define-test ,short-desc
+       (assert-equalp
+           (values ,@quoted-expected-values)
+           ,form))))
 (setf (get 'deftest 'ed::lisp-indent-hook) 2)
 
 (defun make-bit-vector (n)
