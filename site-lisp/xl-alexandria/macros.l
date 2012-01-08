@@ -75,13 +75,15 @@ Example:
                          names-and-forms gensyms)
              ,@forms)))))
 
-(defun parse-body (body &key documentation whole)
-  "Parses BODY into (values remaining-forms declarations doc-string).
+(defun parse-body (body &key documentation interactive whole)
+  "Parses BODY into (values remaining-forms declarations doc-string interactive).
 Documentation strings are recognized only if DOCUMENTATION is true.
+Interactive expressions are recognized only if INTERACTIVE is true.
 Syntax errors in body are signalled and WHOLE is used in the signal
 arguments when given."
   (let ((doc nil)
         (decls nil)
+        (intr nil)
         (current nil))
     (tagbody
      :declarations
@@ -93,8 +95,13 @@ arguments when given."
          (go :declarations))
        (when (and (listp current) (eql (first current) 'declare))
          (push (pop body) decls)
+         (go :declarations))
+       (when (and interactive (listp current) (eql (first current) 'interactive))
+         (if intr
+             (error "Too many interactive expressions in ~S." (or whole body))
+             (setf intr (pop body)))
          (go :declarations)))
-    (values body (nreverse decls) doc)))
+    (values body (nreverse decls) doc intr)))
 
 (defun parse-ordinary-lambda-list (lambda-list &key (normalize t)
                                    allow-specializers
