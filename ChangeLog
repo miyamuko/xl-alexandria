@@ -1,3 +1,7 @@
+2012-01-08  bowbow99
+
+	* (parse-body): interactive 式も取り出せるように変更
+
 2011-12-22  MIYAMUKO Katsuyuki
 
 	* upstream の変更を取り込み
