@@ -22,6 +22,39 @@
 
 (remove-all-tests :alexandria.test.macros)
 
+(define-test macros/parse-body/interactive
+  (ansify:destructuring-bind (defun name lambda-list &body body)
+      `(defun foo (a)
+         "doc-string"
+         (interactive "p")
+         (bar a))
+    (assert-equal (values '("doc-string" (interactive "p") (bar a)) nil nil nil)
+        (parse-body body :documentation nil :interactive nil))
+    (assert-equal (values '("doc-string" (interactive "p") (bar a)) nil nil nil)
+        (parse-body body :documentation nil :interactive t))
+
+    (assert-equal (values '((interactive "p") (bar a)) nil "doc-string" nil)
+        (parse-body body :documentation t :interactive nil))
+    (assert-equal (values '((bar a)) nil "doc-string" '(interactive "p"))
+        (parse-body body :documentation t :interactive t))
+    )
+
+  (ansify:destructuring-bind (defun name lambda-list &body body)
+      `(defun foo (a)
+         (interactive)
+         (bar a))
+    (assert-equal (values '((interactive) (bar a)) nil nil nil)
+        (parse-body body :documentation nil :interactive nil))
+    (assert-equal (values '((bar a)) nil nil '(interactive))
+        (parse-body body :documentation nil :interactive t))
+
+    (assert-equal (values '((interactive) (bar a)) nil nil nil)
+        (parse-body body :documentation t :interactive nil))
+    (assert-equal (values '((bar a)) nil nil '(interactive))
+        (parse-body body :documentation t :interactive t))
+    )
+  )
+
 (define-test macros/parse-ordinary-lambda-list
   ;; TODO
   (assert-equalp '() (parse-ordinary-lambda-list))
