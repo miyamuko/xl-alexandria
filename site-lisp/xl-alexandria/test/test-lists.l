@@ -23,32 +23,67 @@
 (remove-all-tests :alexandria.test.lists)
 
 (define-test lists/reversef
-  ;; TODO
-  (assert-equalp '() (reversef))
+  (let* ((a (list 1 2 3 4))
+         (b a)
+         (c nil))
+    (reversef a)
+    (assert-equal '(4 3 2 1) a)
+    (assert-equal '(1 2 3 4) b)
+
+    (reversef c)
+    (assert-equal nil c)
+    )
   )
 
 (define-test lists/nreversef
-  ;; TODO
-  (assert-equalp '() (nreversef))
+  (let ((a (list 1 2 3 4))
+        (c nil))
+    (reversef a)
+    (assert-equal '(4 3 2 1) a)
+
+    (reversef c)
+    (assert-equal nil c)
+    )
   )
 
 (define-test lists/ensure-car
-  ;; TODO
-  (assert-equalp '() (ensure-car))
+  (assert-equal '(nil) (ensure-cons nil))
+  (assert-equal (cons 1 2) (ensure-cons (cons 1 2)))
+  (assert-equal '("foo") (ensure-cons "foo"))
   )
 
 (define-test lists/remove-from-plistf
-  ;; TODO
-  (assert-equalp '() (remove-from-plistf))
+  (let* ((a (list :foo 1 :bar 2 :baz 3))
+         (b a)
+         (c nil))
+    (remove-from-plistf a :foo :bar)
+    (assert-equal '(:baz 3) a)
+    (assert-equal '(:foo 1 :bar 2 :baz 3) b)
+
+    (remove-from-plistf c)
+    (assert-equal nil c)
+    )
   )
 
 (define-test lists/delete-from-plist
-  ;; TODO
-  (assert-equalp '() (delete-from-plist))
+  (let* ((a (list :foo 1 :bar 2 :baz 3))
+         (c nil))
+    (assert-equal '(:baz 3)
+        (delete-from-plist a :foo :bar))
+    (assert-equal '(:foo 1 :bar 2 :baz 3) a)
+
+    (assert-equal nil (delete-from-plist c :foo :bar))
+    (assert-equal nil c)
+    )
   )
 
 (define-test lists/delete-from-plistf
-  ;; TODO
-  (assert-equalp '() (delete-from-plistf))
-  )
+  (let* ((a (list :foo 1 :bar 2 :baz 3))
+         (c nil))
+    (delete-from-plistf a :foo :bar)
+    (assert-equal '(:baz 3) a)
 
+    (delete-from-plist c :foo :bar)
+    (assert-equal nil c)
+    )
+  )

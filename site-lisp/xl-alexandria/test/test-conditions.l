@@ -23,32 +23,45 @@
 (remove-all-tests :alexandria.test.conditions)
 
 (define-test conditions/required-argument
-  ;; TODO
-  (assert-equalp '() (required-argument))
+  (assert-error 'simple-error
+      (required-argument "foo"))
   )
 
 (define-test conditions/ignore-some-conditions
-  ;; TODO
-  (assert-equalp '() (ignore-some-conditions))
+  (assert-equal nil
+      (handler-case
+          (ignore-some-conditions (simple-error)
+            (error (make-condition 'simple-error)))
+        (error (c)
+          c)))
+  (assert-equal nil
+      (handler-case
+          (ignore-some-conditions (error)
+            (error (make-condition 'simple-error)))
+        (error (c)
+          c)))
+  (assert-error 'error
+      (ignore-some-conditions (simple-error)
+        (error (make-condition 'error))))
   )
 
 (define-test conditions/simple-style-warning
-  ;; TODO
-  (assert-equalp '() (simple-style-warning))
+  (assert-error 'simple-style-warning
+      (simple-style-warning "message"))
   )
 
 (define-test conditions/simple-reader-error
-  ;; TODO
-  (assert-equalp '() (simple-reader-error))
+  (assert-error 'simple-reader-error
+      (simple-reader-error (make-string-input-stream "") "message"))
   )
 
 (define-test conditions/simple-parse-error
-  ;; TODO
-  (assert-equalp '() (simple-parse-error))
+  (assert-error 'simple-parse-error
+      (simple-parse-error "message"))
   )
 
 (define-test conditions/simple-program-error
-  ;; TODO
-  (assert-equalp '() (simple-program-error))
+  (assert-error 'simple-program-error
+      (simple-program-error "message"))
   )
 
