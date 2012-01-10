@@ -23,7 +23,7 @@
 (remove-all-tests :alexandria.test.io)
 
 (define-test io/with-input-from-file
-  (with-input-from-file (s "test-file.txt")
+  (with-input-from-file (s "test-file-crlf-sjis.bin")
     (assert-equal #\x (read-char s))
     (assert-equal #\y (read-char s))
     (assert-equal #\z (read-char s))
@@ -37,10 +37,10 @@
 
 (define-test io/with-input-from-file/direction
   (assert-error 'simple-error
-      (with-input-from-file (s "test-file.txt" :direction :input)
+      (with-input-from-file (s "test-file-crlf-sjis.bin" :direction :input)
         ))
   (assert-error 'simple-error
-      (with-input-from-file (s "test-file.txt" :direction :output)
+      (with-input-from-file (s "test-file-crlf-sjis.bin" :direction :output)
         ))
   )
 
@@ -56,79 +56,79 @@
   )
 
 (define-test io/with-input-from-file/element-type
-  (with-input-from-file (s "test-file.txt" :element-type '(unsigned-byte 8))
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :element-type '(unsigned-byte 8))
     (assert-equal :binary (stream-encoding s))
     (assert-equal "xyzzy\x0d" (read-line s)))
-  (with-input-from-file (s "test-file.txt" :element-type '(unsigned-byte 32))
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :element-type '(unsigned-byte 32))
     (assert-equal :binary (stream-encoding s))
     (assert-equal "xyzzy\x0d" (read-line s)))
-  (with-input-from-file (s "test-file.txt" :element-type 'unsigned-byte)
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :element-type 'unsigned-byte)
     (assert-equal :canonical (stream-encoding s))
     (assert-equal "xyzzy" (read-line s)))
 
-  (with-input-from-file (s "test-file.txt" :element-type 'unsigned-byte :encoding :binary)
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :element-type 'unsigned-byte :encoding :binary)
     (assert-equal :binary (stream-encoding s))
     (assert-equal "xyzzy\x0d" (read-line s)))
-  (with-input-from-file (s "test-file.txt" :element-type '(unsigned-byte 8) :encoding :canonical)
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :element-type '(unsigned-byte 8) :encoding :canonical)
     (assert-equal :canonical (stream-encoding s))
     (assert-equal "xyzzy" (read-line s)))
   )
 
 (define-test io/with-input-from-file/encoding
-  (with-input-from-file (s "test-file.txt")
+  (with-input-from-file (s "test-file-crlf-sjis.bin")
     (assert-equal :canonical (stream-encoding s))
     (assert-equal "xyzzy" (read-line s)))
 
-  (with-input-from-file (s "test-file.txt" :encoding :text)
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :encoding :text)
     (assert-equal :canonical (stream-encoding s))
     (assert-equal "xyzzy" (read-line s)))
 
-  (with-input-from-file (s "test-file.txt" :encoding :canonical)
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :encoding :canonical)
     (assert-equal :canonical (stream-encoding s))
     (assert-equal "xyzzy" (read-line s)))
 
-  (with-input-from-file (s "test-file.txt" :encoding :raw)
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :encoding :raw)
     (assert-equal :raw (stream-encoding s))
     (assert-equal "xyzzy\x0d" (read-line s)))
 
-  (with-input-from-file (s "test-file.txt" :encoding :binary)
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :encoding :binary)
     (assert-equal :binary (stream-encoding s))
     (assert-equal "xyzzy\x0d" (read-line s)))
   )
 
 (define-test io/with-input-from-file/share
   (assert-error 'sharing-violation
-      (with-input-from-file (s "test-file.txt" :share :write)
-        (with-input-from-file (s "test-file.txt" :share :write)
+      (with-input-from-file (s "test-file-crlf-sjis.bin" :share :write)
+        (with-input-from-file (s "test-file-crlf-sjis.bin" :share :write)
           )))
   (assert-error 'sharing-violation
-      (with-input-from-file (s "test-file.txt" :share :write)
-        (with-input-from-file (s "test-file.txt" :share :read)
+      (with-input-from-file (s "test-file-crlf-sjis.bin" :share :write)
+        (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read)
           )))
   (assert-error 'sharing-violation
-      (with-input-from-file (s "test-file.txt" :share :read)
-        (with-input-from-file (s "test-file.txt" :share :write)
+      (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read)
+        (with-input-from-file (s "test-file-crlf-sjis.bin" :share :write)
           )))
   (assert-error 'sharing-violation
-      (with-input-from-file (s "test-file.txt" :share :write)
-        (with-input-from-file (s "test-file.txt" :share :read-write)
+      (with-input-from-file (s "test-file-crlf-sjis.bin" :share :write)
+        (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read-write)
           )))
   (assert-error 'sharing-violation
-      (with-input-from-file (s "test-file.txt" :share :read-write)
-        (with-input-from-file (s "test-file.txt" :share :write)
+      (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read-write)
+        (with-input-from-file (s "test-file-crlf-sjis.bin" :share :write)
           )))
 
-  (with-input-from-file (s "test-file.txt" :share :read)
-    (with-input-from-file (s "test-file.txt" :share :read)
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read)
+    (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read)
       ))
-  (with-input-from-file (s "test-file.txt" :share :read)
-    (with-input-from-file (s "test-file.txt" :share :read-write)
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read)
+    (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read-write)
       ))
-  (with-input-from-file (s "test-file.txt" :share :read-write)
-    (with-input-from-file (s "test-file.txt" :share :read)
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read-write)
+    (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read)
       ))
-  (with-input-from-file (s "test-file.txt" :share :read-write)
-    (with-input-from-file (s "test-file.txt" :share :read-write)
+  (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read-write)
+    (with-input-from-file (s "test-file-crlf-sjis.bin" :share :read-write)
       ))
   )
 
@@ -195,7 +195,7 @@
 (define-test io/read-file-into-string/text-file
   (assert-equalp
       "xyzzy\nXYZZY\nｘｙｚｚｙ\n臭い爺\n"
-      (read-file-into-string "test-file.txt"))
+      (read-file-into-string "test-file-crlf-sjis.bin"))
 
   ;; ファイル読み込みの高速化のためバッファを利用している。
   ;; outline-tree2 がちらつかないようにバッファは削除していない。
@@ -216,7 +216,7 @@
 ;; ミニバッファにプロンプトがある状態で read-file-into-string が
 ;; よばれても問題ないか
 (define-test io/read-file-into-string/minibuffer
-  (let ((file (namestring "test-file.txt")))
+  (let ((file (namestring "test-file-crlf-sjis.bin")))
     (flet ((test (&rest args)
              (assert-true (minibuffer-window-p (selected-window)))
              (assert-equal
@@ -301,7 +301,7 @@
   )
 
 (define-test io/read-file-into-byte-vector/text-file
-  (let ((bytes (read-file-into-byte-vector "test-file.txt")))
+  (let ((bytes (read-file-into-byte-vector "test-file-crlf-sjis.bin")))
     (assert-true (typep bytes 'simple-array))
     (assert-equalp
         #(#x78 #x79 #x7a #x7a #x79 #x0d #x0a #x58 #x59 #x5a #x5a #x59 #x0d #x0a #x82 #x98
@@ -357,19 +357,19 @@
       (package-name (symbol-package 'copy-file)))
   (unwind-protect
       (progn
-        (dolist (from '("test-file.zip" "test-file.txt"))
+        (dolist (from '("test-file.zip" "test-file-crlf-sjis.bin"))
           (let ((to (format nil "~A.out" from)))
             (assert-eql
                 (file-length from)
                 (copy-file from to))
             (assert-true (compare-file from to))))
 
-        (dolist (from '("test-file.zip" "test-file.txt"))
+        (dolist (from '("test-file.zip" "test-file-crlf-sjis.bin"))
           (let ((to (format nil "~A.out" from)))
             (assert-error 'file-exists
                 (copy-file from to :if-to-exists :error))))
 
-        (dolist (from '("test-file.zip" "test-file.txt"))
+        (dolist (from '("test-file.zip" "test-file-crlf-sjis.bin"))
           (let ((to (format nil "~A.out" from)))
             (assert-eql
                 (file-length from)
@@ -382,7 +382,7 @@
                 (read-file-into-byte-vector to))
             )))
     (delete-file "test-file.zip.out")
-    (delete-file "test-file.txt.out")))
+    (delete-file "test-file-crlf-sjis.bin.out")))
 
 (define-test io/copy-stream/string
   (assert-equal "xyzzy"
