@@ -1,7 +1,7 @@
 ## xl-alexandria - A collection of portable public domain utilities for xyzzy Lisp
 
 * Home URL: <http://miyamuko.s56.xrea.com/xyzzy/xl-alexandria/intro.htm>
-* Version: 0.0.1
+* Version: 0.0.2
 
 
 ### SYNOPSIS

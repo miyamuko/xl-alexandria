@@ -9,7 +9,7 @@
 (export '(xl-alexandria-version
           ))
 
-(defconstant +xl-alexandria-version+ "0.0.1")
+(defconstant +xl-alexandria-version+ "0.0.2")
 
 (defun xl-alexandria-version ()
   +xl-alexandria-version+)

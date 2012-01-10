@@ -2,9 +2,9 @@
 
 ---
 
-### 2012-01-xx / 0.0.x
+### 2012-01-10 / 0.0.2
 
-xl-alexandria 0.0.x リリース!
+xl-alexandria 0.0.2 リリース!
 
   * parse-body が interactive 式も取り出せるようになりました (by @bowbow99)。
 
