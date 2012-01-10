@@ -111,8 +111,8 @@ alexandria パッケージには lisp パッケージと同名のシンボルが
   ```
 
 要望やバグは
-[GitHub Issues](http://github.com/miyamuko/xl-winhttp/issues) か
-[@miyamuko](http://twitter.com/home?status=%40miyamuko%20%23xyzzy%20xl-winhttp%3a%20)
+[GitHub Issues](http://github.com/miyamuko/xl-alexandria/issues) か
+[@miyamuko](http://twitter.com/home?status=%40miyamuko%20%23xyzzy%20xl-alexandria%3a%20)
 まで。
 
 
