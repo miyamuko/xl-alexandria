@@ -28,6 +28,7 @@
        :restart-case
        :typecase
        :typep
+       :&allow-other-keys
        )
       )))
 
