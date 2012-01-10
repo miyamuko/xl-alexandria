@@ -216,17 +216,18 @@
 ;; ミニバッファにプロンプトがある状態で read-file-into-string が
 ;; よばれても問題ないか
 (define-test io/read-file-into-string/minibuffer
-  (flet ((test (&rest args)
-           (assert-true (minibuffer-window-p (selected-window)))
-           (assert-equal
-               "xyzzy\nXYZZY\nｘｙｚｚｙ\n臭い爺\n"
-               (read-file-into-string "test-file.txt"))
-           (assert-true (minibuffer-window-p (selected-window)))))
-    (let ((buf (selected-buffer))
-          (*exit-minibuffer-hook* (list #'test)))
-      (read-string "ミニバッファ周りのテスト中です。このまま Enter を押してください。")
-      (assert-equalp buf (selected-buffer))))
-  )
+  (let ((file (namestring "test-file.txt")))
+    (flet ((test (&rest args)
+             (assert-true (minibuffer-window-p (selected-window)))
+             (assert-equal
+                 "xyzzy\nXYZZY\nｘｙｚｚｙ\n臭い爺\n"
+                 (read-file-into-string file))
+             (assert-true (minibuffer-window-p (selected-window)))))
+      (let ((buf (selected-buffer))
+            (*exit-minibuffer-hook* (list #'test)))
+        (read-string "ミニバッファ周りのテスト中です。このまま Enter を押してください。")
+        (assert-equalp buf (selected-buffer))))
+    ))
 
 (define-test io/write-string-into-file/text-file
   (unwind-protect
