@@ -1,3 +1,8 @@
+2012-03-02  MIYAMUKO Katsuyuki
+
+	* (nth-value-or, define-constant): ed:lisp-indent-hook が間違っていたのを修正 (#2)
+	Thanks to @youz.
+
 2012-01-10  MIYAMUKO Katsuyuki
 
 	* xl-alexandria 0.0.2 リリース!

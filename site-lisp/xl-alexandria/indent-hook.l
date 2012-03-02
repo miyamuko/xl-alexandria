@@ -19,10 +19,10 @@
                       (cswitch . 1)
                       ; (whichever . 1)
                       ; (xor . 1)
-                      ; (nth-value-or . 1)
+                      (nth-value-or . 1)
                       (multiple-value-prog2 . 2)
                       ;; definitions.l
-                      (define-constant . 1)
+                      (define-constant . 0)
                       ;; functions.l
                       ; (ensure-functionf . 1)
                       (named-lambda . 1)
