@@ -155,6 +155,11 @@ with and ARGUMENTS to FUNCTION."
   "Expands into a lambda-expression within whose BODY NAME denotes the
 corresponding function."
   `(labels ((,name ,lambda-list ,@body))
+     #+xyzzy
+     (let ((#1=#:fun #',name))
+       (si:*set-function-name #1# ',name)
+       #1#)
+     #-xyzzy
      #',name))
 
 

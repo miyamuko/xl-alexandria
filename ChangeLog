@@ -1,5 +1,7 @@
 2012-03-02  MIYAMUKO Katsuyuki
 
+	* (named-lambda): si:*set-function-name でクロージャに名前を設定するようにした (#3)
+
 	* (nth-value-or, define-constant): ed:lisp-indent-hook が間違っていたのを修正 (#2)
 	Thanks to @youz.
 

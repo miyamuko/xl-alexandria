@@ -591,6 +591,15 @@
       (funcall fac :x 5))
   120)
 
+#+xyzzy
+(deftest named-lambda.3
+         (let ((foo (named-lambda foo ()))
+               (bar (named-lambda bar (x) x)))
+           (values (format nil "~A" foo)
+                   (format nil "~A" bar)))
+  "#<lexical-closure: foo>"
+  "#<lexical-closure: bar>")
+
 ;;;; Lists
 
 (deftest alist-plist.1
