@@ -13,24 +13,9 @@
        :loop
        :loop-finish
        )
-      (:shadowing-import-from :ansify
-       :assert
-       :ccase
-       :cerror
-       :continue
-       :define-setf-expander
-       :defun
-       :destructuring-bind
-       :fdefinition
-       :ecase
-       :etypecase
-       :get-setf-expansion
-       :restart-case
-       :typecase
-       :typep
-       :&allow-other-keys
-       )
       )))
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (ansify::install :alexandria))
 
 (in-package :alexandria)
 
@@ -138,6 +123,7 @@
    array-index
    array-length
    copy-array
+   displace-array
    ;; Sequences
    copy-sequence
    deletef

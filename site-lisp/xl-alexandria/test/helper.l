@@ -20,6 +20,24 @@
           make-bit-vector
           ))
 
+(defun user::runall-alexandria-test ()
+  (interactive)
+  (dolist (src (directory "." :wild "*.l" :recursive t))
+    (load src))
+  (let ((test-pkgs (remove-if #'(lambda (pkg)
+                                  (or (not (string-match "^alexandria.test." (package-name pkg)))
+                                      (string-match "^alexandria.test.helper" (package-name pkg))))
+                              (list-all-packages))))
+    (let ((*trace-output* (lisp-unit::%get-result-buffer-stream)))
+      (dolist (pkg test-pkgs)
+        (let ((pkg-name (package-name pkg)))
+          (fresh-line *trace-output*)
+          (format *trace-output* "~%=== ~A ===~%" pkg-name)
+          (message pkg-name)
+          (let ((*package* pkg))
+            (lisp-unit:run-tests))
+          )))))
+
 (defmacro locally (&body forms)
   `(progn ,@forms))
 

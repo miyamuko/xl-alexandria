@@ -69,6 +69,24 @@
        (typep copy 'simple-array)))
  t)
 
+(deftest displace-array.1
+    (displace-array #2A((1 2)
+                        (3 4)))
+  #(1 2 3 4))
+
+(deftest displace-array.2
+    (displace-array #2A((1 2)
+                        (3 4))
+                    :offset 1)
+  #(2 3 4))
+
+(deftest displace-array.3
+    (displace-array #2A((1 2)
+                        (3 4))
+                    :offset 1
+                    :dimensions '(3 1))
+  #2A((2) (3) (4)))
+
 (deftest array-index.1
     (typep 0 'array-index)
   t)
@@ -1007,12 +1025,23 @@
     (mean '(1 2 10))
   13/3)
 
+(deftest mean.4
+    (mean #2A((1 2 3)
+              (4 5 6)
+              (7 8 9)))
+  5)
+
 (deftest median.1
     (median '(100 0 99 1 98 2 97))
   97)
 
 (deftest median.2
     (median '(100 0 99 1 98 2 97 96))
+  193/2)
+
+(deftest median.3
+    (median #2A((100 0 99 1)
+                (98 2 97 96)))
   193/2)
 
 (deftest variance.1
@@ -1658,18 +1687,18 @@
   :inherited)
 
 (deftest format-symbol.1
-    (let ((s (format-symbol nil "X-~D" 13)))
+    (let ((s (format-symbol nil '#:x-~d 13)))
       (list (symbol-package s)
-            (symbol-name s)))
-  (nil "X-13"))
+            (string= (string '#:x-13) (symbol-name s))))
+  (nil t))
 
 (deftest format-symbol.2
-    (format-symbol :keyword "SYM-~A" :bolic)
+    (format-symbol :keyword '#:sym-~a (string :bolic))
   :sym-bolic)
 
 (deftest format-symbol.3
     (let ((*package* (find-package :lisp)))
-      (format-symbol t "FIND-~A" 'package))
+      (format-symbol t '#:find-~a (string 'package)))
   find-package)
 
 (deftest make-keyword.1
@@ -1731,12 +1760,12 @@
 
 (macrolet
     ((test (type numbers)
-       `(deftest ,(format-symbol t "CDR5.~A" type)
+       `(deftest ,(format-symbol t '#:cdr5.~a (string type))
 	    (let ((numbers ,numbers))
-	      (values (mapcar (of-type ',(format-symbol t "NEGATIVE-~A" type)) numbers)
-		      (mapcar (of-type ',(format-symbol t "NON-POSITIVE-~A" type)) numbers)
-		      (mapcar (of-type ',(format-symbol t "NON-NEGATIVE-~A" type)) numbers)
-		      (mapcar (of-type ',(format-symbol t "POSITIVE-~A" type)) numbers)))
+	      (values (mapcar (of-type ',(format-symbol t '#:negative-~a (string type))) numbers)
+		      (mapcar (of-type ',(format-symbol t '#:non-positive-~a (string type))) numbers)
+		      (mapcar (of-type ',(format-symbol t '#:non-negative-~a (string type))) numbers)
+		      (mapcar (of-type ',(format-symbol t '#:positive-~a (string type))) numbers)))
 	  (t t t nil nil nil nil)
 	  (t t t t nil nil nil)
 	  (nil nil nil t t t t)

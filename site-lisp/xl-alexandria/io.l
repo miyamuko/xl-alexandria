@@ -8,6 +8,7 @@
   (require "xl-alexandria/missing")
   (require "xl-alexandria/macros")
   (require "xl-alexandria/lists")
+  (require "xl-alexandria/types")
   )
 
 (in-package :alexandria)
@@ -171,27 +172,73 @@ unless it's NIL, which means the system default."
                           #+xyzzy element-type
                           (buffer-size 4096)
                           #-xyzzy (buffer (make-array buffer-size :element-type element-type))
-                          #+xyzzy buffer
+                          #+xyzzy (buffer (make-vector buffer-size :element-type 'character :fill-pointer 0))
+                          (start 0) end
                           finish-output)
   "Reads data from INPUT and writes it to OUTPUT. Both INPUT and OUTPUT must
 be streams, they will be passed to READ-SEQUENCE and WRITE-SEQUENCE and must have
 compatible element-types."
-  (let ((bytes-written 0))
-    #+xyzzy
-    (let ((buffer (make-vector buffer-size :element-type 'character :fill-pointer 0)))
-      (while (read-into buffer input nil)
-        (format output "~A" buffer)
-        (incf bytes-written (length buffer))))
-    #-xyzzy
-    (loop
-      :for bytes-read = (read-sequence buffer input)
-      :until (zerop bytes-read)
-      :do (progn
-            (write-sequence buffer output :end bytes-read)
-            (incf bytes-written bytes-read)))
+  (check-type start non-negative-integer)
+  (check-type end (or null non-negative-integer))
+  (check-type buffer-size positive-integer)
+  (when (and start end (< end start))
+    (error "END is smaller than START in ~S" 'copy-stream))
+  #+xyzzy
+  (let ((output-position 0)
+        (input-position 0))
+    (when (and start (not (zerop start)))
+      (while (read-into buffer input nil nil (min (length buffer)
+                                                  (- start input-position)))
+        (incf input-position (length buffer)))
+      (unless (= input-position start)
+        (error "Could not read enough bytes from the input to fulfill the START requirement in ~S" 'copy-stream)))
+    (while (and (or (null end)
+                    (< input-position end))
+                (read-into buffer input nil nil (when end
+                                                  (min (length buffer)
+                                                       (- end input-position)))))
+      (format output "~A" buffer)
+      (let ((n (length buffer)))
+        (incf input-position n)
+        (incf output-position n)))
+    (when (and end (/= output-position end))
+      (error "Could not read enough bytes from the input to fulfill the END requirement in ~S" 'copy-stream))
     (when finish-output
       (finish-output output))
-    bytes-written))
+    output-position)
+  #-xyzzy
+  (let ((output-position 0)
+        (input-position 0))
+    (unless (zerop start)
+      ;; FIXME add platform specific optimization to skip seekable streams
+      (loop
+        :while (< input-position start)
+        :for bytes-read = (read-sequence buffer input
+                                         :end (min (length buffer)
+                                                   (- start input-position)))
+        :do (progn
+              (when (zerop bytes-read)
+                (error "Could not read enough bytes from the input to fulfill the START requirement in ~S" 'copy-stream))
+              (incf input-position bytes-read))))
+    (assert (= input-position start))
+    (loop
+      :while (or (null end)
+                 (< input-position end))
+      :for bytes-read = (read-sequence buffer input
+                                       :end (when end
+                                              (min (length buffer)
+                                                   (- end input-position))))
+      :do (progn
+            (when (zerop bytes-read)
+              (if end
+                  (error "Could not read enough bytes from the input to fulfill the END requirement in ~S" 'copy-stream)
+                  (return)))
+            (incf input-position bytes-read)
+            (write-sequence buffer output :end bytes-read)
+            (incf output-position bytes-read)))
+    (when finish-output
+      (finish-output output))
+    output-position))
 
 #+xyzzy
 (defun normalize-pathname (pathname)
