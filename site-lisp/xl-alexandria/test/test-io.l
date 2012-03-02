@@ -446,3 +446,46 @@
       (delete-buffer from)
       (delete-buffer to)))
   )
+
+(define-test io/copy-stream/start-end
+  (assert-equal "zy"
+      (with-input-from-string (input "xyzzy")
+        (with-output-to-string (output)
+          (copy-stream input output :start 3))))
+
+  (assert-equal "xyz"
+      (with-input-from-string (input "xyzzy")
+        (with-output-to-string (output)
+          (copy-stream input output :end 3))))
+
+  (assert-equal ""
+      (with-input-from-string (input "xyzzy")
+        (with-output-to-string (output)
+          (copy-stream input output :start 3 :end 3))))
+
+  (assert-equal "z"
+      (with-input-from-string (input "xyzzy")
+        (with-output-to-string (output)
+          (copy-stream input output :start 3 :end 4))))
+
+  (assert-equal "zy"
+      (with-input-from-string (input "xyzzy")
+        (with-output-to-string (output)
+          (copy-stream input output :start 3 :end 5))))
+
+  (assert-equal "‚š‚™"
+      (with-input-from-string (input "‚˜‚™‚š‚š‚™")
+        (with-output-to-string (output)
+          (copy-stream input output :start 3 :end 5))))
+
+  (assert-error 'error
+      (with-input-from-string (input "xyzzy")
+        (with-output-to-string (output)
+          (copy-stream input output :start 6))))
+
+  (assert-error 'error
+      (with-input-from-string (input "xyzzy")
+        (with-output-to-string (output)
+          (copy-stream input output :end 6))))
+  )
+

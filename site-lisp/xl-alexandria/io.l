@@ -187,21 +187,26 @@ compatible element-types."
   (let ((output-position 0)
         (input-position 0))
     (when (and start (not (zerop start)))
-      (while (read-into buffer input nil nil (min (length buffer)
-                                                  (- start input-position)))
+      (while (let ((n (min buffer-size
+                           (- start input-position))))
+               (and (< 0 n)
+                    (read-into buffer input nil nil n)))
         (incf input-position (length buffer)))
       (unless (= input-position start)
         (error "Could not read enough bytes from the input to fulfill the START requirement in ~S" 'copy-stream)))
     (while (and (or (null end)
                     (< input-position end))
-                (read-into buffer input nil nil (when end
-                                                  (min (length buffer)
-                                                       (- end input-position)))))
+                (let ((n (when end
+                           (min buffer-size
+                                (- end input-position)))))
+                  (and (or (null n)
+                           (< 0 n))
+                       (read-into buffer input nil nil n))))
       (format output "~A" buffer)
       (let ((n (length buffer)))
         (incf input-position n)
         (incf output-position n)))
-    (when (and end (/= output-position end))
+    (when (and end (/= input-position end))
       (error "Could not read enough bytes from the input to fulfill the END requirement in ~S" 'copy-stream))
     (when finish-output
       (finish-output output))
