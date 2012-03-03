@@ -156,7 +156,6 @@
     * [coercef](#macro-coercef)
     * [of-type](#function-of-type)
     * [type=](#function-type-)
-  * [UNKNOWN](#unknown)
     * [negative-double-float](#type-negative-double-float)
     * [negative-double-float-p](#function-negative-double-float-p)
     * [negative-fixnum](#type-negative-fixnum)
@@ -1555,10 +1554,6 @@ and a secondary value that is true is the type equality could be reliably
 determined: primary value of `NIL` and secondary value of T indicates that the
 types are not equivalent.
 
-
-----
-
-## <a name="unknown">UNKNOWN</a>
 
 ### Type: <a name="type-negative-double-float"><em>negative-double-float</em></a>
 
