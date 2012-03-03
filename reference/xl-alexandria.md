@@ -282,9 +282,9 @@ or a list of bindings of the form:
 
 ```lisp
 ((variable-1 initial-form-1)
-(variable-2 initial-form-2)
-...
-(variable-n initial-form-n))
+ (variable-2 initial-form-2)
+ ...
+ (variable-n initial-form-n))
 ```
 
 
@@ -313,9 +313,9 @@ or a list of bindings of the form:
 
 ```lisp
 ((variable-1 initial-form-1)
-(variable-2 initial-form-2)
-...
-(variable-n initial-form-n))
+ (variable-2 initial-form-2)
+ ...
+ (variable-n initial-form-n))
 ```
 
 
@@ -343,9 +343,9 @@ or a list of bindings of the form:
 
 ```lisp
 ((variable-1 initial-form-1)
-(variable-2 initial-form-2)
-...
-(variable-n initial-form-n))
+ (variable-2 initial-form-2)
+ ...
+ (variable-n initial-form-n))
 ```
 
 
@@ -439,14 +439,14 @@ Examples:
 
 ```lisp
 (unwind-protect-case ()
-(protected-form)
-(:normal (format t "This is only evaluated if PROTECTED-FORM executed normally.~%"))
-(:abort  (format t "This is only evaluated if PROTECTED-FORM aborted preemptively.~%"))
-(:always (format t "This is evaluated in either case.~%")))
+     (protected-form)
+   (:normal (format t "This is only evaluated if PROTECTED-FORM executed normally.~%"))
+   (:abort  (format t "This is only evaluated if PROTECTED-FORM aborted preemptively.~%"))
+   (:always (format t "This is evaluated in either case.~%")))
 
 (unwind-protect-case (aborted-p)
-(protected-form)
-(:always (perform-cleanup-if aborted-p)))
+     (protected-form)
+   (:always (perform-cleanup-if aborted-p)))
 ```
 
 
@@ -821,8 +821,8 @@ Example:
 
 ```lisp
 (map-product 'list '(1 2) '(3 4) '(5 6))
-=> ((1 3 5) (1 3 6) (1 4 5) (1 4 6)
-(2 3 5) (2 3 6) (2 4 5) (2 4 6))
+ => ((1 3 5) (1 3 6) (1 4 5) (1 4 6)
+     (2 3 5) (2 3 6) (2 4 5) (2 4 6))
 ```
 
 
@@ -943,36 +943,36 @@ Example:
 
 ```lisp
 (defun dcase (x)
-(destructuring-case x
-((:foo a b)
-(format nil "foo: ~S, ~S" a b))
-((:bar &key a b)
-(format nil "bar, ~S, ~S" a b))
-(((:alt1 :alt2) a)
-(format nil "alt: ~S" a))
-((t &rest rest)
-(format nil "unknown: ~S" rest))))
+  (destructuring-case x
+    ((:foo a b)
+     (format nil "foo: ~S, ~S" a b))
+    ((:bar &key a b)
+     (format nil "bar, ~S, ~S" a b))
+    (((:alt1 :alt2) a)
+     (format nil "alt: ~S" a))
+    ((t &rest rest)
+     (format nil "unknown: ~S" rest))))
 
-(dcase (list :foo 1 2))        ; => "foo: 1, 2"
-(dcase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
-(dcase (list :alt1 1))         ; => "alt: 1"
-(dcase (list :alt2 2))         ; => "alt: 2"
-(dcase (list :quux 1 2 3))     ; => "unknown: 1, 2, 3"
+ (dcase (list :foo 1 2))        ; => "foo: 1, 2"
+ (dcase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
+ (dcase (list :alt1 1))         ; => "alt: 1"
+ (dcase (list :alt2 2))         ; => "alt: 2"
+ (dcase (list :quux 1 2 3))     ; => "unknown: 1, 2, 3"
 
 (defun decase (x)
-(destructuring-case x
-((:foo a b)
-(format nil "foo: ~S, ~S" a b))
-((:bar &key a b)
-(format nil "bar, ~S, ~S" a b))
-(((:alt1 :alt2) a)
-(format nil "alt: ~S" a))))
+  (destructuring-case x
+    ((:foo a b)
+     (format nil "foo: ~S, ~S" a b))
+    ((:bar &key a b)
+     (format nil "bar, ~S, ~S" a b))
+    (((:alt1 :alt2) a)
+     (format nil "alt: ~S" a))))
 
-(decase (list :foo 1 2))        ; => "foo: 1, 2"
-(decase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
-(decase (list :alt1 1))         ; => "alt: 1"
-(decase (list :alt2 2))         ; => "alt: 2"
-(decase (list :quux 1 2 3))     ; =| error
+ (decase (list :foo 1 2))        ; => "foo: 1, 2"
+ (decase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
+ (decase (list :alt1 1))         ; => "alt: 1"
+ (decase (list :alt2 2))         ; => "alt: 2"
+ (decase (list :quux 1 2 3))     ; =| error
 ```
 
 
@@ -998,36 +998,36 @@ Example:
 
 ```lisp
 (defun dcase (x)
-(destructuring-case x
-((:foo a b)
-(format nil "foo: ~S, ~S" a b))
-((:bar &key a b)
-(format nil "bar, ~S, ~S" a b))
-(((:alt1 :alt2) a)
-(format nil "alt: ~S" a))
-((t &rest rest)
-(format nil "unknown: ~S" rest))))
+  (destructuring-case x
+    ((:foo a b)
+     (format nil "foo: ~S, ~S" a b))
+    ((:bar &key a b)
+     (format nil "bar, ~S, ~S" a b))
+    (((:alt1 :alt2) a)
+     (format nil "alt: ~S" a))
+    ((t &rest rest)
+     (format nil "unknown: ~S" rest))))
 
-(dcase (list :foo 1 2))        ; => "foo: 1, 2"
-(dcase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
-(dcase (list :alt1 1))         ; => "alt: 1"
-(dcase (list :alt2 2))         ; => "alt: 2"
-(dcase (list :quux 1 2 3))     ; => "unknown: 1, 2, 3"
+ (dcase (list :foo 1 2))        ; => "foo: 1, 2"
+ (dcase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
+ (dcase (list :alt1 1))         ; => "alt: 1"
+ (dcase (list :alt2 2))         ; => "alt: 2"
+ (dcase (list :quux 1 2 3))     ; => "unknown: 1, 2, 3"
 
 (defun decase (x)
-(destructuring-case x
-((:foo a b)
-(format nil "foo: ~S, ~S" a b))
-((:bar &key a b)
-(format nil "bar, ~S, ~S" a b))
-(((:alt1 :alt2) a)
-(format nil "alt: ~S" a))))
+  (destructuring-case x
+    ((:foo a b)
+     (format nil "foo: ~S, ~S" a b))
+    ((:bar &key a b)
+     (format nil "bar, ~S, ~S" a b))
+    (((:alt1 :alt2) a)
+     (format nil "alt: ~S" a))))
 
-(decase (list :foo 1 2))        ; => "foo: 1, 2"
-(decase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
-(decase (list :alt1 1))         ; => "alt: 1"
-(decase (list :alt2 2))         ; => "alt: 2"
-(decase (list :quux 1 2 3))     ; =| error
+ (decase (list :foo 1 2))        ; => "foo: 1, 2"
+ (decase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
+ (decase (list :alt1 1))         ; => "alt: 1"
+ (decase (list :alt2 2))         ; => "alt: 2"
+ (decase (list :quux 1 2 3))     ; =| error
 ```
 
 
@@ -1053,36 +1053,36 @@ Example:
 
 ```lisp
 (defun dcase (x)
-(destructuring-case x
-((:foo a b)
-(format nil "foo: ~S, ~S" a b))
-((:bar &key a b)
-(format nil "bar, ~S, ~S" a b))
-(((:alt1 :alt2) a)
-(format nil "alt: ~S" a))
-((t &rest rest)
-(format nil "unknown: ~S" rest))))
+  (destructuring-case x
+    ((:foo a b)
+     (format nil "foo: ~S, ~S" a b))
+    ((:bar &key a b)
+     (format nil "bar, ~S, ~S" a b))
+    (((:alt1 :alt2) a)
+     (format nil "alt: ~S" a))
+    ((t &rest rest)
+     (format nil "unknown: ~S" rest))))
 
-(dcase (list :foo 1 2))        ; => "foo: 1, 2"
-(dcase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
-(dcase (list :alt1 1))         ; => "alt: 1"
-(dcase (list :alt2 2))         ; => "alt: 2"
-(dcase (list :quux 1 2 3))     ; => "unknown: 1, 2, 3"
+ (dcase (list :foo 1 2))        ; => "foo: 1, 2"
+ (dcase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
+ (dcase (list :alt1 1))         ; => "alt: 1"
+ (dcase (list :alt2 2))         ; => "alt: 2"
+ (dcase (list :quux 1 2 3))     ; => "unknown: 1, 2, 3"
 
 (defun decase (x)
-(destructuring-case x
-((:foo a b)
-(format nil "foo: ~S, ~S" a b))
-((:bar &key a b)
-(format nil "bar, ~S, ~S" a b))
-(((:alt1 :alt2) a)
-(format nil "alt: ~S" a))))
+  (destructuring-case x
+    ((:foo a b)
+     (format nil "foo: ~S, ~S" a b))
+    ((:bar &key a b)
+     (format nil "bar, ~S, ~S" a b))
+    (((:alt1 :alt2) a)
+     (format nil "alt: ~S" a))))
 
-(decase (list :foo 1 2))        ; => "foo: 1, 2"
-(decase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
-(decase (list :alt1 1))         ; => "alt: 1"
-(decase (list :alt2 2))         ; => "alt: 2"
-(decase (list :quux 1 2 3))     ; =| error
+ (decase (list :foo 1 2))        ; => "foo: 1, 2"
+ (decase (list :bar :a 1 :b 2))  ; => "bar: 1, 2"
+ (decase (list :alt1 1))         ; => "alt: 1"
+ (decase (list :alt2 2))         ; => "alt: 2"
+ (decase (list :quux 1 2 3))     ; =| error
 ```
 
 
@@ -1253,9 +1253,9 @@ Examples:
 
 ```lisp
 (map-iota #'print 3 :start 1 :step 1.0) => 3
-;;; 1.0
-;;; 2.0
-;;; 3.0
+  ;;; 1.0
+  ;;; 2.0
+  ;;; 3.0
 ```
 
 
@@ -1549,7 +1549,7 @@ of `TYPE`.
 
 ### Function: <a name="function-type-"><em>type=</em></a> <i>`TYPE1` `TYPE2`</i>
 
-Returns a primary value of T is `TYPE1` and `TYPE`2 are the same type,
+Returns a primary value of T is `TYPE1` and `TYPE2` are the same type,
 and a secondary value that is true is the type equality could be reliably
 determined: primary value of `NIL` and secondary value of T indicates that the
 types are not equivalent.
