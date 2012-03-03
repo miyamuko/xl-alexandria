@@ -27,29 +27,43 @@
 
 ### DESCRIPTION
 
-xl-alexandria は Common Lisp の [Alexandria](http://common-lisp.net/project/alexandria/)
-を xyzzy に移植したものです。
+xl-alexandria は Common Lisp の [Alexandria] を xyzzy に移植したものです。
 
 Alexandria は巨大なユーティリティ集です。
 実践 Common Lisp や OnLisp に載っていたり、自分で書いたことがあるような
 関数・マクロが大量に詰まっています。
 
+  [Alexandria]: http://common-lisp.net/project/alexandria/
 
 ### INSTALL
 
-1. [NetInstaller](http://www7a.biglobe.ne.jp/~hat/xyzzy/ni.html)
-   で xl-alexandria, ansi-loop, ansify, setf-values をインストールします。
+1. [NetInstaller] で xl-alexandria, ansi-loop, ansify, setf-values をインストールします。
 
 2. xl-alexandria はライブラリであるため自動的にロードはされません。
    必要な時点で require してください。
 
+  [NetInstaller]: http://www7a.biglobe.ne.jp/~hat/xyzzy/ni.html
+
 
 ### REFERENCE
 
-パッケージ名は alexandria.0.dev です。ニックネーム alexandria です。
+リファレンスは以下を参照してください。
 
-詳細は [Alexandria のリファレンス](http://common-lisp.net/project/alexandria/draft/alexandria.html)
-を参照してください。
+  * https://github.com/miyamuko/xl-alexandria/blob/master/reference/xl-alexandria.md
+
+
+また、info-modoki-mode でリファレンスを引けるようにするには xl-alexandria と
+xy-reference をインストールしたあとに、*scratch* バッファで以下を評価してください。
+
+```lisp
+(require :xy-reference)
+(xy-reference:2txt)
+```
+
+その後、xyzzy を再起動すればリファレンスを引けるようになります。
+
+
+### NOTE
 
 alexandria パッケージには lisp パッケージと同名のシンボルがあります (copy-file と featurep)。
 
@@ -110,10 +124,10 @@ alexandria パッケージには lisp パッケージと同名のシンボルが
   ;   t
   ```
 
-要望やバグは
-[GitHub Issues](http://github.com/miyamuko/xl-alexandria/issues) か
-[@miyamuko](http://twitter.com/home?status=%40miyamuko%20%23xyzzy%20xl-alexandria%3a%20)
-まで。
+要望やバグは [GitHub Issues] か [@miyamuko] まで。
+
+  [GitHub Issues]: http://github.com/miyamuko/xl-alexandria/issues
+  [@miyamuko]: http://twitter.com/home?status=%40miyamuko%20%23xyzzy%20xl-alexandria%3a%20
 
 
 ### AUTHOR
