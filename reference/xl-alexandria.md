@@ -365,7 +365,7 @@ If all initial-forms evaluate to true, then `FORMS` are executed as an implicit
 
 ### Macro: <a name="macro-ignore-some-conditions"><em>ignore-some-conditions</em></a> <i>(&rest `CONDITIONS`) &body `BODY`</i>
 
-Similar to CL:`IGNORE-ERRORS` but the (unevaluated) `CONDITIONS`
+Similar to `IGNORE-ERRORS` but the (unevaluated) `CONDITIONS`
 list determines which specific conditions are to be ignored.
 
 
@@ -418,7 +418,7 @@ Not documented yet.
 
 ### Macro: <a name="macro-unwind-protect-case"><em>unwind-protect-case</em></a> <i>(&optional `ABORT-FLAG`) `PROTECTED-FORM` &body `CLAUSES`</i>
 
-Like CL:`UNWIND-PROTECT`, but you can specify the circumstances that
+Like `UNWIND-PROTECT`, but you can specify the circumstances that
 the cleanup `CLAUSES` are run.
 
 
@@ -612,7 +612,7 @@ as the `TABLE`. The copy has the same properties as the original, unless
 overridden by the keyword arguments.
 
 Before each of the original values is set into the new hash-table, `KEY`
-is invoked on the value. As `KEY` defaults to CL:`IDENTITY`, a shallow
+is invoked on the value. As `KEY` defaults to `IDENTITY`, a shallow
 copy is returned by default.
 
 
@@ -902,8 +902,8 @@ place and saves back the result into the place.
 
 ### Function: <a name="function-set-equal"><em>set-equal</em></a> <i>`LIST1` `LIST2` &key (`TEST` #'eql) (`KEY` nil `KEYP`)</i>
 
-Returns true if every element of `LIST`1 matches some element of `LIST`2 and
-every element of `LIST`2 matches some element of `LIST`1. Otherwise returns false.
+Returns true if every element of `LIST1` matches some element of `LIST2` and
+every element of `LIST2` matches some element of `LIST1`. Otherwise returns false.
 
 
 ### Function: <a name="function-setp"><em>setp</em></a> <i>`OBJECT` &key (`TEST` #'eql) (`KEY` #'identity)</i>
@@ -1550,7 +1550,7 @@ of `TYPE`.
 
 ### Function: <a name="function-type-"><em>type=</em></a> <i>`TYPE1` `TYPE2`</i>
 
-Returns a primary value of T is `TYPE`1 and `TYPE`2 are the same type,
+Returns a primary value of T is `TYPE1` and `TYPE`2 are the same type,
 and a secondary value that is true is the type equality could be reliably
 determined: primary value of `NIL` and secondary value of T indicates that the
 types are not equivalent.
