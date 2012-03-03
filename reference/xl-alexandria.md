@@ -423,7 +423,7 @@ the cleanup `CLAUSES` are run.
 
 
 ```lisp
-clauses ::= (:`NORMAL` form*)* | (:`ABORT` form*)* | (:`ALWAYS` form*)*
+clauses ::= (:NORMAL form*)* | (:ABORT form*)* | (:ALWAYS form*)*
 ```
 
 
@@ -441,8 +441,8 @@ Examples:
 ```lisp
 (unwind-protect-case ()
 (protected-form)
-(:normal (format t "This is only evaluated if `PROTECTED-FORM` executed normally.~%"))
-(:abort  (format t "This is only evaluated if `PROTECTED-FORM` aborted preemptively.~%"))
+(:normal (format t "This is only evaluated if PROTECTED-FORM executed normally.~%"))
+(:abort  (format t "This is only evaluated if PROTECTED-FORM aborted preemptively.~%"))
 (:always (format t "This is evaluated in either case.~%")))
 
 (unwind-protect-case (aborted-p)
@@ -931,7 +931,7 @@ Clauses are of the form:
 
 
 ```lisp
-((`CASE-KEYS` . `DESTRUCTURING-LAMBDA-LIST`) `FORM*`)
+((CASE-KEYS . DESTRUCTURING-LAMBDA-LIST) FORM*)
 ```
 
 
@@ -986,7 +986,7 @@ Clauses are of the form:
 
 
 ```lisp
-((`CASE-KEYS` . `DESTRUCTURING-LAMBDA-LIST`) `FORM*`)
+((CASE-KEYS . DESTRUCTURING-LAMBDA-LIST) FORM*)
 ```
 
 
@@ -1041,7 +1041,7 @@ Clauses are of the form:
 
 
 ```lisp
-((`CASE-KEYS` . `DESTRUCTURING-LAMBDA-LIST`) `FORM*`)
+((CASE-KEYS . DESTRUCTURING-LAMBDA-LIST) FORM*)
 ```
 
 
@@ -1135,19 +1135,25 @@ Parses an ordinary lambda-list, returning as multiple values:
 
 2. Optional parameter specifications, normalized into form:
 
+    ```lisp
     (name init suppliedp)
+    ```
 
 3. Name of the rest parameter, or `NIL`.
 
 4. Keyword parameter specifications, normalized into form:
 
+    ```lisp
     ((keyword-name name) init suppliedp)
+    ```
 
-5. Boolean indicating &`ALLOW-OTHER-KEYS` presence.
+5. Boolean indicating `&ALLOW-OTHER-KEYS` presence.
 
-6. &`AUX` parameter specifications, normalized into form
+6. `&AUX` parameter specifications, normalized into form
 
+    ```lisp
     (name init).
+    ```
 
 Signals a `PROGRAM-ERROR` is the lambda-list is malformed.
 
