@@ -259,7 +259,7 @@ expected-type designator of a TYPE-ERROR."
 
 (defun ensure-cons (cons)
   "If CONS is a cons, it is returned. Otherwise returns a fresh cons with CONS
-  in the car, and NIL in the cdr."
+in the car, and NIL in the cdr."
   (if (consp cons)
       cons
       (cons cons nil)))
