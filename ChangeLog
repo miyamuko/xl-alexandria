@@ -1,3 +1,7 @@
+2012-03-03  MIYAMUKO Katsuyuki
+
+	* (ordinary-lambda-list-keywords): 謎のシンボルがエクスポートされていたので削除
+
 2012-03-02  MIYAMUKO Katsuyuki
 
 	* upstream の変更を取り込み
