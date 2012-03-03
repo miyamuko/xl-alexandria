@@ -1,5 +1,7 @@
 2012-03-03  MIYAMUKO Katsuyuki
 
+	* パッケージのニックネームに :xl-alexandria を追加
+
 	* (ordinary-lambda-list-keywords): 謎のシンボルがエクスポートされていたので削除
 
 2012-03-02  MIYAMUKO Katsuyuki
