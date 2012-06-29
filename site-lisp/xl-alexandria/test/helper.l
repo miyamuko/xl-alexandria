@@ -14,9 +14,7 @@
 
 (in-package :alexandria.test.helper)
 
-(export '(locally
-          constantly
-          deftest
+(export '(deftest
           make-bit-vector
           ))
 
@@ -37,14 +35,6 @@
           (let ((*package* pkg))
             (lisp-unit:run-tests))
           )))))
-
-(unless (fboundp 'locally)
-  (defmacro locally (&body forms)
-    `(progn ,@forms)))
-
-(defun constantly (v)
-  #'(lambda (&rest args)
-      v))
 
 (defmacro deftest (short-desc form &body expected-values)
   (let ((quoted-expected-values (mapcar #'(lambda (v)
