@@ -38,8 +38,9 @@
             (lisp-unit:run-tests))
           )))))
 
-(defmacro locally (&body forms)
-  `(progn ,@forms))
+(unless (fboundp 'locally)
+  (defmacro locally (&body forms)
+    `(progn ,@forms)))
 
 (defun constantly (v)
   #'(lambda (&rest args)
